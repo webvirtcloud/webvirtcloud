@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  frontend:
+    image: node:18.12-buster
+    hostname: frontend
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: ["sh", "-c", "npm ci && npm run start -- --host"]

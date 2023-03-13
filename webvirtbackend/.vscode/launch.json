@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Django",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "runserver",
+                "0:8000"
+            ],
+            "django": true,
+            "justMyCode": true,
+            "env": {
+                "PYTHONOPTIMIZE": "true",
+                "PYTHONUNBUFFERED": "true",
+                "ANSIBLE_HOST_KEY_CHECKING": "false",
+                "ANSIBLE_PARAMIKO_LOOK_FOR_KEYS": "false",
+                "DJANGO_SETTINGS_MODULE": "webvirtcloud.settings.develop",
+            }
+        }
+    ]
+}

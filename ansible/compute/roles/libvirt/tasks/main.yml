@@ -1,0 +1,191 @@
+---
+- name: install env packages
+  dnf:
+    name: [
+      perf,
+      tuned,
+      libvirt,
+      virt-top,
+      qemu-kvm,
+      xmlstarlet,
+      cyrus-sasl-md5,
+      qemu-guest-agent, 
+      libguestfs-tools, 
+      libguestfs-rescue, 
+      libguestfs-winsupport,
+      libguestfs-bash-completion
+    ]
+    state: latest
+
+- name: enable tuned host profile
+  shell: tuned-adm profile virtual-host
+
+- name: add to sysctl some settings
+  copy: 
+    src: 99-bridge.conf 
+    dest: /etc/sysctl.d/99-bridge.conf 
+    owner: root 
+    group: root 
+    mode: 0644
+
+- name: apply sysctl settings
+  command: sysctl --system
+
+- name: change method libvirt auth
+  lineinfile:
+    destfile: /etc/sasl2/libvirt.conf
+    regexp: "^mech_list:.*"
+    line: "mech_list: digest-md5"
+    state: present
+
+- name: setup sasldb path
+  lineinfile:
+    destfile: /etc/sasl2/libvirt.conf
+    regexp: "^#sasldb_path:.*"
+    line: "sasldb_path: /etc/libvirt/passwd.db"
+    state: present
+
+- name: allow vnc listen on all interfaces
+  lineinfile:
+    destfile: /etc/libvirt/qemu.conf
+    regexp: "^#vnc_listen"
+    line: "vnc_listen = \"0.0.0.0\""
+    state: present
+
+- name: disable tls socket for libvirt
+  lineinfile:
+    destfile: /etc/libvirt/libvirtd.conf
+    regexp: "^#listen_tls"
+    line: "listen_tls = 0"
+    state: present
+
+- name: enable tcp socket for libvirt
+  lineinfile:
+    destfile: /etc/libvirt/libvirtd.conf
+    regexp: "^#listen_tcp"
+    line: "listen_tcp = 1"
+    state: present
+
+- name: enable sasl auth for libvirt 
+  lineinfile:
+    destfile: /etc/libvirt/libvirtd.conf
+    regexp: "^#auth_tcp"
+    line: "auth_tcp = \"sasl\""
+    state: present
+
+- name: enable libvirtd service
+  systemd:
+    name: libvirtd
+    enabled: yes
+    state: started
+
+- name: enable libvirt-guests service
+  systemd:
+    name: libvirt-guests
+    enabled: yes
+    state: started
+
+- name: saslpasswd2 create user
+  shell: echo libvirt | saslpasswd2 -a libvirt kvm
+
+- name: stop libvirtd-ro tcp service
+  shell: systemctl stop libvirtd-ro.socket
+
+- name: stop libvirtd socket
+  shell: systemctl stop libvirtd.socket
+
+- name: stoop libvirtd service
+  shell: systemctl stop libvirtd
+
+- name: enable libvirtd-tcp socket
+  shell: systemctl enable --now libvirtd-tcp.socket
+
+- name: create network pool public
+  shell:
+    cmd: |
+      cat <<EOF | virsh net-define /dev/stdin
+      <network>
+        <name>public</name>
+        <forward mode='bridge'/>
+        <bridge name='br-ext'/>
+      </network>
+      EOF
+
+- name: start netwrok pool public
+  shell: virsh net-start public && virsh net-autostart public
+
+- name: create network pool privae
+  shell:
+    cmd: |
+      cat <<EOF | virsh net-define /dev/stdin
+      <network>
+        <name>private</name>
+        <forward mode='bridge'/>
+        <bridge name='br-int'/>
+      </network>
+      EOF
+
+- name: start netwrok pool private
+  shell: virsh net-start private && virsh net-autostart private
+
+- name: remove default network
+  shell: virsh net-destroy default && virsh net-undefine default
+
+- name: create storage pool images definition
+  shell: virsh pool-define-as images dir - - - - "/var/lib/libvirt/images"
+
+- name: build storage pool images and start it
+  shell: virsh pool-build images && virsh pool-start images && virsh pool-autostart images
+
+- name: create backup folder for libvirt storage pool
+  file:
+    path: /var/lib/libvirt/backups
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: create storage pool backups definition
+  shell: virsh pool-define-as backups dir - - - - "/var/lib/libvirt/backups"
+
+- name: build storage pool backups and start it
+  shell: virsh pool-build backups && virsh pool-start backups && virsh pool-autostart backups
+
+- name: create iso folder for libvirt storage pool
+  file:
+    path: /var/lib/libvirt/iso
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: create storage pool iso definition
+  shell: virsh pool-define-as iso dir - - - - "/var/lib/libvirt/iso"
+
+- name: build storage pool iso and start it
+  shell: virsh pool-build iso && virsh pool-start iso && virsh pool-autostart iso
+
+- name: define nwfilter clean ipv6 traffic
+  shell:
+    cmd: |
+      cat <<EOF | virsh nwfilter-define /dev/stdin
+      <filter name='clean-traffic-ipv6' chain='root'>
+        <filterref filter='no-mac-spoofing'/>
+        <filterref filter='no-ip-spoofing'/>
+        <rule action='accept' direction='out' priority='-650'>
+          <mac protocolid='ipv4'/>
+        </rule>
+        <filterref filter='no-ipv6-spoofing'/>
+        <rule action='accept' direction='out' priority='-650'>
+          <mac protocolid='ipv6'/>
+        </rule>
+        <filterref filter='allow-incoming-ipv4'/>
+        <filterref filter='allow-incoming-ipv6'/>
+        <filterref filter='no-arp-spoofing'/>
+        <rule action='accept' direction='inout' priority='-500'>
+          <mac protocolid='arp'/>
+        </rule>
+        <filterref filter='no-other-l2-traffic'/>
+        <filterref filter='qemu-announce-self'/>
+      </filter>
+      EOF

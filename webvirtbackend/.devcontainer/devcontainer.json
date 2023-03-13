@@ -1,0 +1,12 @@
+{
+	"name": "Existing Docker Compose (Extend)",
+	"dockerComposeFile": [
+		"../docker-compose.debug.yml"
+	],
+	"extensions": [
+		"ms-python.python",
+		"GitHub.copilot"
+	],
+	"service": "backend",
+	"workspaceFolder": "/app"
+}

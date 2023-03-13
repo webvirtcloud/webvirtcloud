@@ -1,0 +1,30 @@
+[
+    {
+        "model": "region.region",
+        "pk": 1,
+        "fields": {
+            "name": "Frankfurt 1",
+            "slug": "fra1",
+            "description": "New datacenter",
+            "is_active": true,
+            "is_deleted": false,
+            "created": "2022-11-11T18:48:33.848Z",
+            "updated": "2022-11-11T18:48:33.848Z",
+            "deleted": null
+        }
+    },
+    {
+        "model": "region.region",
+        "pk": 2,
+        "fields": {
+            "name": "New York 2",
+            "slug": "nyc2",
+            "description": "Old datacenter",
+            "is_active": false,
+            "is_deleted": false,
+            "created": "2022-11-11T18:48:33.848Z",
+            "updated": "2022-11-11T18:48:33.848Z",
+            "deleted": null
+        }
+    }
+]

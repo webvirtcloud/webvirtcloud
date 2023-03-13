@@ -1,0 +1,77 @@
+---
+- name: install NetworkManager required packages
+  package:
+    name:
+      - NetworkManager-libnm
+      - nm-connection-editor
+      - libsemanage-python3
+      - policycoreutils-python3
+    state: present
+
+- name: remove unused network interfaces
+  shell: nmcli connection delete $(nmcli --fields UUID,DEVICE conn | grep -v eth0 | awk '(NR>1){print $1}')
+
+- name: setup eth1 network interface
+  nmcli:
+    type: ethernet
+    ifname: eth1
+    conn_name: eth1
+    ip4: 172.64.0.2/24
+    mtu: 1500
+    state: present
+
+- name: start eth1 network interface
+  shell: nmcli conn up eth1
+
+- name: create br-ext bridge interface
+  nmcli:
+    type: bridge
+    ifname: br-ext
+    conn_name: br-ext
+    ip4:
+      - 10.255.0.1/16
+      - 169.254.169.254/16
+    stp: no
+    state: present
+
+- name: create master interface for br-ext
+  nmcli:
+    type: bridge-slave
+    conn_name: eth2
+    ifname: eth2
+    master: br-ext
+    mtu: 1500
+    hairpin: no
+    state: present
+
+- name: start eth2 network interface
+  shell: nmcli conn up eth2
+
+- name: start br-int bridge interface
+  shell: nmcli conn up br-ext
+
+- name: create br-int bridge interface
+  nmcli:
+    type: bridge
+    ifname: br-int
+    conn_name: br-int
+    method4: disabled
+    method6: ignore
+    stp: no
+    state: present
+
+- name: create master interface for br-int
+  nmcli:
+    type: bridge-slave
+    conn_name: eth3
+    ifname: eth3
+    master: br-int
+    mtu: 1500
+    hairpin: no
+    state: present
+
+- name: start eth3 network interface
+  shell: nmcli conn up eth3
+
+- name: start br-int bridge interface
+  shell: nmcli conn up br-int

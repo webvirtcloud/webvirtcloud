@@ -1,0 +1,48 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { ArgsTable } from '@storybook/addon-docs';
+import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
+import TrashIcon from '@heroicons/react/20/solid/TrashIcon';
+import PencilSquareIcon from '@heroicons/react/20/solid/PencilSquareIcon';
+import Input from './Input';
+
+<Meta title="Design System / Components/Input" component={Input} />
+
+```js
+import Input from './Input';
+````
+
+## Usage 
+
+<Canvas withSource="open">
+  <Story name="base">
+    <Input label='Base' hint='Base input hint' placeholder='Base input' />
+  </Story>
+</Canvas>
+
+<Canvas withSource="open">
+  <Story name="sizes">
+    <div className='grid grid-cols-3 gap-2'>
+      <Input label='Small input' size='sm' placeholder='Small input' />
+      <Input label='Medium input' size='md' placeholder='Medium input' />
+      <Input label='Large input' size='lg' placeholder='Large input' />
+    </div>
+  </Story>
+</Canvas>
+
+<Canvas withSource="open">
+  <Story name="required">
+    <Input label='Required' size='md' required placeholder='Input is required' />
+  </Story>
+</Canvas>
+
+<Canvas withSource="open">
+  <Story name="disabled">
+    <Input label='Disabled' size='md' disabled placeholder='Input is disabled' />
+  </Story>
+</Canvas>
+
+<Canvas withSource="open">
+  <Story name="error">
+    <Input label='Error' size='md' error='Can not be empty' hint='Base hint' placeholder='Some error occured...' />
+  </Story>
+</Canvas>

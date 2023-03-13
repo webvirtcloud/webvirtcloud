@@ -1,0 +1,33 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { ArgsTable } from '@storybook/addon-docs';
+import { Dialog } from '.';
+import { Button } from '../Button';
+import { useState } from 'react';
+
+<Meta title="Design System / Components/Dialog" component={Dialog} />
+
+```js
+import { Dialog } from './Dialog';
+````
+
+## Usage 
+
+export const InteractiveDialog = () => {
+  const [isOpen, setOpen] = useState(false);
+
+  return (
+    <div>
+      <Button onClick={() => setOpen(true)}>Open dialog</Button>
+      <Dialog isOpen={isOpen} title='Base Dialog' onClose={() => setOpen(false)}>My dialog</Dialog>
+    </div>
+  )
+}
+
+<Canvas withSource="open">
+  <Story name="base">
+    <InteractiveDialog />
+  </Story>
+</Canvas>
+
+## Props 
+<ArgsTable of={Dialog} />

@@ -1,0 +1,6 @@
+---
+- name: start webvirtcompute
+  systemd:
+    name: webvirtcompute
+    enabled: yes
+    state: started

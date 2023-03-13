@@ -1,0 +1,17 @@
+[
+    {
+        "model": "project.project",
+        "pk": 1,
+        "fields": {
+            "uuid": "85c242db-163b-4b83-86ad-f6dddbc3e2f7",
+            "user": 2,
+            "name": "User's project",
+            "description": null,
+            "is_default": true,
+            "is_deleted": false,
+            "created": "2022-11-11T11:18:33.854Z",
+            "updated": "2022-11-11T11:18:33.854Z",
+            "deleted": null
+        }
+    }
+]

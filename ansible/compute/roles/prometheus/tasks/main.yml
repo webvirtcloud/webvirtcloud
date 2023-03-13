@@ -1,0 +1,51 @@
+---
+- name: install prometheus
+  dnf:
+    name: [golang-github-prometheus, golang-github-prometheus-node-exporter]
+    state: latest
+  notify: start prometheus-node-exporter
+
+- name: download libvirt exporter
+  unarchive:
+    src: https://github.com/retspen/libvirt-exporter/releases/download/0.1.0/prometheus-libvirt-exporter-0.0.1.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: copy prometheus-libvirt-exporter binary to /usr/local/bin
+  copy:
+    src: /tmp/prometheus-libvirt-exporter/prometheus-libvirt-exporter
+    dest: /usr/local/bin/prometheus-libvirt-exporter
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: yes
+
+- name: restore selinux permission for binary
+  shell: restorecon -v /usr/local/bin/prometheus-libvirt-exporter
+
+- name: copy prometheus-libvirt-exporter service to systemd
+  copy:
+    src: /tmp/prometheus-libvirt-exporter/prometheus-libvirt-exporter.service
+    dest: /etc/systemd/system/prometheus-libvirt-exporter.service
+    owner: root
+    group: root
+    mode: 0644
+    remote_src: yes
+  notify: start prometheus-libvirt-exporter
+
+- name: copy prometheus file
+  copy:
+    src: prometheus
+    dest: /etc/sysconfig/prometheus
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy prometheus.yml file
+  copy:
+    src: prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+    owner: root
+    group: root
+    mode: 0644
+  notify: start prometheus

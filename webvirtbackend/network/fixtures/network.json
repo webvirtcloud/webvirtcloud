@@ -1,0 +1,59 @@
+[
+    {
+        "model": "network.network",
+        "pk": 1,
+        "fields": {
+            "cidr": "10.255.0.0",
+            "netmask": "255.255.0.0",
+            "gateway": "10.255.0.1",
+            "dns1": "0.0.0.0",
+            "dns2": "0.0.0.0",
+            "type": "compute",
+            "version": 4,
+            "region": 1,
+            "is_active": true,
+            "is_deleted": false,
+            "created": "2022-11-11T18:48:33.848Z",
+            "updated": "2022-11-11T18:48:33.848Z",
+            "deleted": null
+        }
+    },
+    {
+        "model": "network.network",
+        "pk": 2,
+        "fields": {
+            "cidr": "10.132.0.0",
+            "netmask": "255.255.255.0",
+            "gateway": "10.132.0.1",
+            "dns1": "0.0.0.0",
+            "dns2": "0.0.0.0",
+            "type": "private",
+            "version": 4,
+            "region": 1,
+            "is_active": true,
+            "is_deleted": false,
+            "created": "2022-11-11T18:48:33.848Z",
+            "updated": "2022-11-11T18:48:33.848Z",
+            "deleted": null
+        }
+    },
+    {
+        "model": "network.network",
+        "pk": 3,
+        "fields": {
+            "cidr": "192.168.33.0",
+            "netmask": "255.255.255.0",
+            "gateway": "192.168.33.1",
+            "dns1": "8.8.8.8",
+            "dns2": "1.1.1.1",
+            "type": "public",
+            "version": 4,
+            "region": 1,
+            "is_active": true,
+            "is_deleted": false,
+            "created": "2022-11-11T18:48:33.848Z",
+            "updated": "2022-11-11T18:48:33.848Z",
+            "deleted": null
+        }
+    }
+]

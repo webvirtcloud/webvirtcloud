@@ -1,0 +1,18 @@
+---
+- name: start prometheus
+  systemd:
+    name: prometheus
+    enabled: yes
+    state: started
+
+- name: start prometheus-node-exporter
+  systemd:
+    name: prometheus-node-exporter
+    enabled: yes
+    state: started
+
+- name: start prometheus-libvirt-exporter
+  systemd:
+    name: prometheus-libvirt-exporter
+    enabled: yes
+    state: started

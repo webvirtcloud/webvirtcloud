@@ -1,0 +1,13 @@
+[Unit]
+Description=WebVirtCompute dameon
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Restart=always
+Environment=LIBGUESTFS_BACKEND="direct"
+ExecStart=/usr/local/bin/webvirtcompute -c /etc/webvirtcompute/webvirtcompute.ini
+SyslogIdentifier=webvirtcompute
+
+[Install]
+WantedBy=multi-user.target

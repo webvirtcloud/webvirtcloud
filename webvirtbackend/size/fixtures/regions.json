@@ -1,0 +1,90 @@
+[
+    {
+        "model": "size.size_regions",
+        "pk": 1,
+        "fields": {
+            "size": 1,
+            "region": 1
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 2,
+        "fields": {
+            "size": 2,
+            "region": 1
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 3,
+        "fields": {
+            "size": 3,
+            "region": 1
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 4,
+        "fields": {
+            "size": 5,
+            "region": 1
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 5,
+        "fields": {
+            "size": 4,
+            "region": 1
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 6,
+        "fields": {
+            "size": 1,
+            "region": 2
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 7,
+        "fields": {
+            "size": 3,
+            "region": 2
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 8,
+        "fields": {
+            "size": 8,
+            "region": 2
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 9,
+        "fields": {
+            "size": 5,
+            "region": 2
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 10,
+        "fields": {
+            "size": 6,
+            "region": 2
+        }
+    },
+    {
+        "model": "size.size_regions",
+        "pk": 11,
+        "fields": {
+            "size": 7,
+            "region": 2
+        }
+    }
+]

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<direct>
+  <rule ipv="ipv4" table="filter" chain="FORWARD" priority="1">-m physdev --physdev-is-bridged -j ACCEPT</rule>
+  <rule ipv="ipv4" table="nat" chain="POSTROUTING" priority="0">-d 10.255.0.0/16 -j MASQUERADE</rule>
+  <rule ipv="ipv4" table="nat" chain="PREROUTING" priority="0">-i br-ext '!' -s 169.254.0.0/16 -d 169.254.169.254 -p tcp -m tcp --dport 80 -j DNAT --to-destination 172.64.0.1:8000</rule>
+</direct>

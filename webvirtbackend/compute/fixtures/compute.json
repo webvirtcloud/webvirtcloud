@@ -1,0 +1,20 @@
+[
+    {
+        "model": "compute.compute",
+        "pk": 1,
+        "fields": {
+            "uuid": "bae017be-621a-4c68-9ba9-fb65ac091ede",
+            "name": "fra1compute01",
+            "arch": "x86_64",
+            "description": "Compute01 in FRA",
+            "hostname": "172.64.0.2",
+            "token": "24636cd05baf2c0b50dff3488a64660b597beda48497112e3d6d9a0085329088",
+            "region": 1,
+            "is_active": true,
+            "is_deleted": false,
+            "created": "2022-12-29T20:36:18.667Z",
+            "updated": "2022-12-29T20:36:18.667Z",
+            "deleted": null
+        }
+    }
+]

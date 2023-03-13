@@ -1,0 +1,45 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { ArgsTable } from '@storybook/addon-docs';
+import { Button } from '../Button';
+import { Menu, MenuItem } from '.';
+import { useState, useRef } from 'react';
+
+<Meta title="Design System / Components/Menu" component={Menu} />
+
+```js
+import { Menu } from './Menu';
+````
+
+## Usage
+
+export const InteractiveMenu = () => {
+  const [isOpen, setOpen] = useState(false);
+  const reference = useRef();
+
+  const handleMenuItemClick = (item) => {
+    console.log(item);
+    setOpen(false);
+  }
+
+  return (
+    <div>
+      <Button onClick={() => setOpen(!isOpen)} ref={reference}>Open dialog</Button>
+      <Menu placement='bottom-start' isOpen={isOpen} source={reference}>
+        <MenuItem onClick={() => handleMenuItemClick('option 1')}>Option 1</MenuItem>
+        <MenuItem onClick={() => handleMenuItemClick('option 2')}>Option 2</MenuItem>
+        <MenuItem onClick={() => handleMenuItemClick('option 3')}>Option 3</MenuItem>
+        <MenuItem onClick={() => handleMenuItemClick('option 4')}>Option 4</MenuItem>
+      </Menu>
+    </div>
+  ) 
+}
+
+<Canvas withSource="open">
+  <Story name="base">
+    <InteractiveMenu />
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={Menu} />

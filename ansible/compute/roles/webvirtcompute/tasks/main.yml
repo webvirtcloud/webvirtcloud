@@ -1,0 +1,42 @@
+---
+- name: download webvirtcompute app
+  unarchive:
+    src: https://cloud-apps.webvirt.cloud/webvirtcompute-rockylinux8-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: copy webvirtcompute app to /usr/local/bin
+  copy:
+    src: /tmp/webvirtcompute/webvirtcompute
+    dest: /usr/local/bin/webvirtcompute
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: yes
+
+- name: restore selinux permission for webvirtcompute binary file
+  shell: restorecon -v /usr/local/bin/webvirtcompute
+
+- name: create webvirtcompute folder
+  file:
+    path: /etc/webvirtcompute
+    state: directory
+
+- name: copy webvirtcompute.ini file to etc webvirtcompute folder
+  copy:
+    src: /tmp/webvirtcompute/webvirtcompute.ini
+    dest: /etc/webvirtcompute/webvirtcompute.ini
+    owner: root
+    group: root
+    mode: 0644
+    remote_src: yes
+
+- name: copy webvirtcompute.service file to systemd and run it
+  copy:
+    src: /tmp/webvirtcompute/webvirtcompute.service
+    dest: /etc/systemd/system/webvirtcompute.service
+    owner: root
+    group: root
+    mode: 0644
+    remote_src: yes
+  notify: start webvirtcompute

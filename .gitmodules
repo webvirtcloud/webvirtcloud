@@ -1,0 +1,9 @@
+[submodule "webvirtbackend"]
+	path = webvirtbackend
+	url = git@github.com:retspen/webvirtbackend.git
+[submodule "webvirtfrontend"]
+	path = webvirtfrontend
+	url = git@github.com:retspen/webvirtfrontend.git
+[submodule "webvirtcompute"]
+	path = webvirtcompute
+	url = git@github.com:retspen/webvirtcompute.git

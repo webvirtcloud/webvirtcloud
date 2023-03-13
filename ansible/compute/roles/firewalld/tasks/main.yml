@@ -1,0 +1,30 @@
+---
+- name: run firewalld service
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: add zeroconf network to zone trusted
+  shell: firewall-cmd --permanent --add-port=8884/tcp
+
+- name: add zeroconf network to zone trusted
+  shell: firewall-cmd --zone=trusted --permanent --add-source=169.254.0.0/16
+
+- name: add management network to zone trusted
+  shell: firewall-cmd --zone=trusted --permanent --add-source=172.64.0.0/24
+
+- name: add br-ext interface to zone trusted
+  shell: firewall-cmd --zone=trusted --permanent --add-interface=br-ext
+
+- name: add br-int interface to zone trusted
+  shell: firewall-cmd --zone=trusted --permanent --add-interface=br-int
+
+- name: copy firewalld direct rule file
+  copy:
+    src: direct.xml
+    dest: /etc/firewalld/direct.xml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart firewalld

@@ -1,0 +1,13 @@
+---
+- name: install common packages
+  dnf:
+    name: [net-tools, epel-release, bash-completion, glibc-all-langpacks]
+    state: latest
+
+- name: disable zeroconf service
+  copy: 
+    src: network
+    dest: /etc/sysconfig/network 
+    owner: root 
+    group: root 
+    mode: 0644

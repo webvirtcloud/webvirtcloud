@@ -1,0 +1,14 @@
+---
+#
+# This playbook prepare the compute node for the WebVirtCloud installation
+#
+
+- hosts: all
+  become: yes
+  roles:
+    - common
+    - nmcli
+    - libvirt
+    - prometheus
+    - webvirtcompute
+    - firewalld

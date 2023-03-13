@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root, .light {
+    --color-bg-body: #f7f7f8;
+    --color-bg-base: #fff;
+    --color-bg-alt: #efeff1;
+    --color-bg-alt2: #d5d5d5;
+
+    --color-bg-interactive-hover: hsla(0,0%,0%,.06);
+
+    --color-bg-control-default: #222;
+
+    /* input */
+    --color-bg-input-default: white;
+    --color-bg-input-disabled: theme(colors.neutral.100);
+    --color-border-input-default: theme(colors.neutral.300);
+
+    /* disabled button */
+    --color-bg-button-disabled: theme(colors.neutral.100);
+    --color-text-button-disabled: theme(colors.neutral.500);
+
+    /* default button */
+    --color-bg-button-default: theme(colors.blue.700);
+    --color-bg-button-default-hover: theme(colors.blue.600);
+    --color-bg-button-default-active: theme(colors.blue.700);
+    --color-text-button-default: white;
+    
+    /* secondary button */
+    --color-bg-button-secondary: transparent;
+    --color-bg-button-secondary-hover: theme(colors.neutral.100);
+    --color-text-button-secondary: white;
+    --color-border-button-secondary: var(--color-bg-alt2);
+    --color-border-button-secondary-active: theme(colors.neutral.400);
+
+    /* danger button */
+    --color-bg-button-danger: theme(colors.red.50);
+    --color-bg-button-danger-hover: transparent;
+    --color-text-button-danger: theme(colors.red.600);
+    --color-border-button-danger: theme(colors.red.300);
+
+    --color-text-body: #000;
+    --color-text-alt: #696969;
+    --color-text-alt2: #53535f;
+  }
+  .dark {
+    --color-bg-body: #111;
+    --color-bg-base: #222;
+    --color-bg-alt: #333;
+    --color-bg-alt2: #444;
+
+    --color-bg-interactive-hover: hsla(0,0%,100%,.08);
+
+    --color-bg-control-default: #222;
+    
+    /* input */
+    --color-bg-input-default: transparent;
+    --color-bg-input-disabled: theme(colors.neutral.700);
+    --color-border-input-default: theme(colors.neutral.600);
+
+    /* disabled button */
+    --color-bg-button-disabled: theme(colors.neutral.700);
+    --color-text-button-disabled: theme(colors.neutral.400);
+
+    /* secondary button */
+    --color-bg-button-secondary: transparent;
+    --color-bg-button-secondary-hover: var(--color-bg-interactive-hover);
+    --color-text-button-secondary: white;
+    --color-border-button-secondary: var(--color-bg-alt2);
+    --color-border-button-secondary-active: theme(colors.neutral.500);
+    
+    /* danger button */
+    --color-bg-button-danger: transparent;
+    --color-bg-button-danger-hover: var(--color-bg-interactive-hover);
+    --color-text-button-danger: theme(colors.red.400);
+    --color-border-button-danger: var(--color-bg-alt2);
+    --color-border-button-danger-active: theme(colors.red.400);
+
+    --color-text-body: #fff;
+    --color-text-alt: #dedee3;
+    --color-text-alt2: #adadb8;
+  }
+  html {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply text-sm bg-body text-body;
+    font-family: 'Manrope', cursive;
+    font-weight: 500;
+  }
+}
