@@ -1,6 +1,0 @@
--r production.txt
-black
-bpython
-drf-yasg
-django-cors-headers
-django-debug-toolbar
