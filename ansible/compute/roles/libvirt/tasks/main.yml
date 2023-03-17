@@ -151,19 +151,19 @@
 - name: build storage pool backups and start it
   shell: virsh pool-build backups && virsh pool-start backups && virsh pool-autostart backups
 
-- name: create iso folder for libvirt storage pool
+- name: create isos folder for libvirt storage pool
   file:
-    path: /var/lib/libvirt/iso
+    path: /var/lib/libvirt/isos
     state: directory
     owner: root
     group: root
     mode: 0755
 
-- name: create storage pool iso definition
-  shell: virsh pool-define-as iso dir - - - - "/var/lib/libvirt/iso"
+- name: create storage pool isos definition
+  shell: virsh pool-define-as isos dir - - - - "/var/lib/libvirt/isos"
 
-- name: build storage pool iso and start it
-  shell: virsh pool-build iso && virsh pool-start iso && virsh pool-autostart iso
+- name: build storage pool isos and start it
+  shell: virsh pool-build isos && virsh pool-start isos && virsh pool-autostart isos
 
 - name: define nwfilter clean ipv6 traffic
   shell:
