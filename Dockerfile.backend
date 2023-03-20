@@ -1,0 +1,33 @@
+# Copyright 2022 WebVirtCloud
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+FROM --platform=$BUILDPLATFORM python:3.10-alpine as backend-deps
+
+RUN apk add --no-cache gcc g++ musl-dev mariadb-dev
+
+WORKDIR /requirements
+
+COPY ./webvirtbackend/requirements/production.txt .
+
+RUN pip install -U pip wheel setuptools
+RUN pip install -r production.txt
+
+FROM --platform=$BUILDPLATFORM backend-deps AS backend
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+WORKDIR /backend
+
+COPY ./webvirtbackend/ /backend/

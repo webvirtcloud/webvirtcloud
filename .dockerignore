@@ -1,0 +1,7 @@
+.git
+.mysql
+.flake8
+.vscode
+.devcontainer
+Dockfile
+docker-compose.yml
