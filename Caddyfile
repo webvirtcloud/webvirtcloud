@@ -1,0 +1,24 @@
+{$CLIENT_DOMAIN} {
+  root * /usr/share/caddy
+  file_server
+}
+
+{$API_DOMAIN} {
+  redir /admin /
+  redir /metadata /
+  reverse_proxy /account/ backend:8000/account/ 
+  reverse_proxy / backend:8000/api/ 
+}
+
+{$MANAGE_DOMAIN} {
+  redir / /admin/
+  reverse_proxy /admin/ backend:6080
+}
+
+169.254.169.254 {
+  reverse_proxy /metadata/ backend:8000/metadata/ 
+}
+
+{$CONSOLE_DOMAIN} {
+  reverse_proxy / novnc:6080
+} 

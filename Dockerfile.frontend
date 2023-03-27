@@ -28,6 +28,6 @@ COPY ./webvirtfrontend/apps/web/ /frontend/apps/web/
 
 RUN npm run build
 
-FROM --platform=$BUILDPLATFORM nginx:1.23-alpine AS frontend
+FROM --platform=$BUILDPLATFORM caddy:2.6.4-alpine AS frontend
 
-COPY --from=frontend-build /frontend/apps/web/dist/ /usr/share/nginx/html/
+COPY --from=frontend-build /frontend/apps/web/dist/ /usr/share/caddy/

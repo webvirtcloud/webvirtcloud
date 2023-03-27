@@ -1,13 +1,20 @@
-version: 3.7"
+version: "3.7"
 
 services:
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
-    hostname: backend
+    hostname: frontend
     ports:
-      - 8080:80
+      - 80:80
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    environment:
+      API_DOMAIN: "api.webvirt.cloud"
+      CLIENT_DOMAIN: "client.webvirt.cloud"
+      MANAGE_DOMAIN: "manage.webvirt.cloud"
+      CONSOLE_DOMAIN: "console.webvirt.cloud"
   backend:
     build:
       context: .
@@ -26,7 +33,7 @@ services:
       ANSIBLE_HOST_KEY_CHECKING: 0
       ANSIBLE_PARAMIKO_LOOK_FOR_KEYS: 0
       DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
-      CELERY_BROKER_URL: "amqp://guest:guest@rabbitmq:5672"
+      CELERY_BROKER_URL: "amqp://django:django@rabbitmq:5672/webvirtcloud"
     depends_on:
       - mariadb
   novnc:
@@ -60,7 +67,7 @@ services:
       ANSIBLE_HOST_KEY_CHECKING: 0
       ANSIBLE_PARAMIKO_LOOK_FOR_KEYS: 0
       DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
-      CELERY_BROKER_URL: "amqp://guest:guest@rabbitmq:5672"
+      CELERY_BROKER_URL: "amqp://django:django@rabbitmq:5672/webvirtcloud"
     depends_on:
       - rabbitmq
       - mariadb
@@ -83,5 +90,6 @@ services:
       - 5672:5672
       - 15672:15672
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: django
+      RABBITMQ_DEFAULT_PASS: django
+      RABBITMQ_DEFAULT_VHOST: /webvirtcloud
