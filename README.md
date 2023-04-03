@@ -45,3 +45,7 @@ docker-compose exec backend python3 manage.py migrate
 ```bash
 docker compose exec backend sh -c "python3 manage.py loaddata */fixtures/*.json"
 ```
+
+## License ##
+
+WebVirtCloud is licensed under the Apache 2.0 License. See the `LICENSE` file for more information.
