@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  frontend:
+    environment:
+      API_DOMAIN: "api.webvirt.cloud"
+      CLIENT_DOMAIN: "client.webvirt.cloud"
+      MANAGE_DOMAIN: "manage.webvirt.cloud"
+      CONSOLE_DOMAIN: "console.webvirt.cloud"
