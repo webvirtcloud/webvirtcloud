@@ -192,5 +192,5 @@
 
 - name: download finnix iso
   get_url:
-    src: https://www.finnix.org/releases/125/finnix-125.iso
+    url: https://www.finnix.org/releases/125/finnix-125.iso
     dest: /var/lib/libvirt/isos/finnix-125.iso
