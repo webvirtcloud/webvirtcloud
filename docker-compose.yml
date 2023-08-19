@@ -53,17 +53,38 @@ services:
       DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
     depends_on:
       - mariadb
-  celery:
+  beat:
     build:
       context: .
       dockerfile: Dockerfile.backend
-    hostname: celery
+    hostname: beat
+    command: celery -A webvirtcloud beat -l info
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_NAME: webvirtcloud
+      DB_USER: django
+      DB_PASSWORD: django
+      PYTHONOPTIMIZE: 1
+      ANSIBLE_HOST_KEY_CHECKING: 0
+      ANSIBLE_PARAMIKO_LOOK_FOR_KEYS: 0
+      DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
+      CELERY_BROKER_URL: "amqp://django:django@rabbitmq:5672/webvirtcloud"
+    depends_on:
+      - rabbitmq
+      - mariadb
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    hostname: worker
     command: celery -A webvirtcloud worker -l info
     environment:
       DB_HOST: mariadb
-      DB_USER: root
-      DB_PASSWORD: root
-      PYTHONOPTIMIZE: 1
+      DB_PORT: 3306
+      DB_NAME: webvirtcloud
+      DB_USER: django
+      DB_PASSWORD: django
       ANSIBLE_HOST_KEY_CHECKING: 0
       ANSIBLE_PARAMIKO_LOOK_FOR_KEYS: 0
       DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
