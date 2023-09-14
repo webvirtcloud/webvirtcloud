@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.frontend
+    container_name: webvirtcloud-frontend
     hostname: frontend
     ports:
       - 80:80
@@ -19,6 +20,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
+    container_name: webvirtcloud-backend
     hostname: backend
     ports:
       - 8000:8000
@@ -40,6 +42,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
+    container_name: webvirtcloud-novnc
     hostname: novnc
     ports:
       - 6080:6080
@@ -57,6 +60,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
+    container_name: webvirtcloud-beat
     hostname: beat
     command: celery -A webvirtcloud beat -l info
     environment:
@@ -77,6 +81,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
+    container_name: webvirtcloud-worker
     hostname: worker
     command: celery -A webvirtcloud worker -l info
     environment:
@@ -94,6 +99,7 @@ services:
       - mariadb
   mariadb:
     image: mariadb:10.6.10
+    container_name: webvirtcloud-mariadb
     hostname: mariadb
     volumes:
       - ./.mysql:/var/lib/mysql
@@ -106,6 +112,7 @@ services:
       MARIADB_ROOT_PASSWORD: root
   rabbitmq:
     image: rabbitmq:3.10.13
+    container_name: webvirtcloud-rabbitmq
     hostname: rabbitmq
     ports:
       - 5672:5672
