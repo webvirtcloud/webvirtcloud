@@ -2,4 +2,4 @@
 .DS_*
 .mysql
 .vagrant
-production.yml
+docker-compose.override.yml
