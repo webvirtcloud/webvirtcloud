@@ -2,7 +2,12 @@
 
 WebVirtCloud is a web-based virtualization platform that allows users to manage and create virtual machines on a remote server. It uses git submodules to build the backend and frontend components of the platform.
 
-## Installation ##
+## KVM node Configuration ##
+
+[WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) is small daemon which allows to manage virtual machines on the node via WebVirtCloud. It is written in Python and uses libvirt and libvirt-python. WebVirtCompute is a part of WebVirtCloud and is located in the `webvirtcloud/webvirtcompute` directory. Check README.md for more information.
+
+
+## Configuration Backend and Frontend (BETA) ##
 
 To install WebVirtCloud, follow these steps:
 
