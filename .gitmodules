@@ -1,9 +1,9 @@
 [submodule "webvirtbackend"]
 	path = webvirtbackend
-	url = git@github.com:webvirtcloud/webvirtbackend.git
+	url = ../../webvirtcloud/webvirtbackend.git
 [submodule "webvirtfrontend"]
 	path = webvirtfrontend
-	url = git@github.com:webvirtcloud/webvirtfrontend.git
+	url = ../../webvirtcloud/webvirtfrontend.git
 [submodule "webvirtcompute"]
 	path = webvirtcompute
-	url = git@github.com:webvirtcloud/webvirtcompute.git
+	url = ../../webvirtcloud/webvirtcompute.git
