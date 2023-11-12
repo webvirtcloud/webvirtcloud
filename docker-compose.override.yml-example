@@ -4,6 +4,10 @@ services:
   frontend:
     environment:
       API_DOMAIN: "api.webvirt.cloud"
+      ASSETS_DOMAIN: "assets.webvirt.cloud"
       CLIENT_DOMAIN: "client.webvirt.cloud"
       MANAGE_DOMAIN: "manage.webvirt.cloud"
       CONSOLE_DOMAIN: "console.webvirt.cloud"
+  backend:
+    environment:
+      BASE_DOMAIN: "webvirt.cloud"

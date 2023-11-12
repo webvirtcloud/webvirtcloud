@@ -9,10 +9,12 @@ services:
     hostname: frontend
     ports:
       - 80:80
+      - 443:443
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
     environment:
       API_DOMAIN: "api.webvirt.cloud"
+      ASSETS_DOMAIN: "assets.webvirt.cloud"
       CLIENT_DOMAIN: "client.webvirt.cloud"
       MANAGE_DOMAIN: "manage.webvirt.cloud"
       CONSOLE_DOMAIN: "console.webvirt.cloud"
@@ -23,7 +25,7 @@ services:
     container_name: webvirtcloud-backend
     hostname: backend
     ports:
-      - 8000:8000
+      - 127.0.0.1:8000:8000
     command: gunicorn webvirtcloud.wsgi:application --bind 0.0.0.0:8000
     environment:
       DB_HOST: mariadb
@@ -45,7 +47,7 @@ services:
     container_name: webvirtcloud-novnc
     hostname: novnc
     ports:
-      - 6080:6080
+      - 127.0.0.1:6080:6080
     command: python3 manage.py novncd --verbose
     environment:
       DB_HOST: mariadb
@@ -74,8 +76,8 @@ services:
       DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
       CELERY_BROKER_URL: "amqp://django:django@rabbitmq:5672/webvirtcloud"
     depends_on:
-      - rabbitmq
       - mariadb
+      - rabbitmq
   scheduler:
     build:
       context: .
@@ -95,16 +97,15 @@ services:
       DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
       CELERY_BROKER_URL: "amqp://django:django@rabbitmq:5672/webvirtcloud"
     depends_on:
-      - rabbitmq
+      - worker
       - mariadb
+      - rabbitmq
   mariadb:
     image: mariadb:10.6.10
     container_name: webvirtcloud-mariadb
     hostname: mariadb
     volumes:
       - ./.mysql:/var/lib/mysql
-    ports:
-      - 3306:3306
     environment:
       MARIADB_DATABASE: webvirtcloud
       MARIADB_USER: django
@@ -114,9 +115,6 @@ services:
     image: rabbitmq:3.10.13
     container_name: webvirtcloud-rabbitmq
     hostname: rabbitmq
-    ports:
-      - 5672:5672
-      - 15672:15672
     environment:
       RABBITMQ_DEFAULT_USER: django
       RABBITMQ_DEFAULT_PASS: django

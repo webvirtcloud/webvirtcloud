@@ -1,24 +1,75 @@
-{$CLIENT_DOMAIN} {
-  root * /usr/share/caddy
+{$ASSETS_DOMAIN}:80 {
+  root * /usr/share/caddy/assets/
   file_server
 }
 
-{$API_DOMAIN} {
-  redir /admin /
-  redir /metadata /
-  reverse_proxy /account/ backend:8000/account/ 
-  reverse_proxy / backend:8000/api/ 
+{$ASSETS_DOMAIN}:443 {
+  tls internal
+  root * /usr/share/caddy/assets/
+  file_server
 }
 
-{$MANAGE_DOMAIN} {
-  redir / /admin/
-  reverse_proxy /admin/ backend:8000
+{$CLIENT_DOMAIN}:80 {
+  root * /usr/share/caddy/client/
+  file_server
 }
 
-169.254.169.254 {
-  reverse_proxy /metadata/ backend:8000/metadata/ 
+{$CLIENT_DOMAIN}:443 {
+  tls internal
+  root * /usr/share/caddy/client/
+  file_server
 }
 
-{$CONSOLE_DOMAIN} {
+{$API_DOMAIN}:80 {
+  redir /admin / 301
+  redir /metadata / 301
+
+  handle_path /account/ {
+    reverse_proxy http://backend:8000
+  }
+  handle_path /api/ {
+    reverse_proxy / backend:8000/api/
+  }
+}
+
+{$API_DOMAIN}:443 {
+  tls internal
+  redir /admin / 301
+  redir /metadata / 301
+
+  handle_path /account/ {
+    reverse_proxy http://backend:8000
+  }
+
+  handle_path /api/ {
+    reverse_proxy http://backend:8000
+  }
+}
+
+{$MANAGE_DOMAIN}:80 {
+  redir / /admin/ 301
+
+  reverse_proxy backend:8000
+}
+
+{$MANAGE_DOMAIN}:443 {
+  tls internal
+  redir / /admin/ 301
+
+  reverse_proxy backend:8000
+}
+
+{$CONSOLE_DOMAIN}:80 {
   reverse_proxy / novnc:6080
 } 
+
+{$CONSOLE_DOMAIN}:443 {
+  tls internal
+  reverse_proxy / novnc:6080
+} 
+
+169.254.169.254:80 {
+  handle_path /metadata/ {
+    reverse_proxy http://backend:8000
+  }
+}
