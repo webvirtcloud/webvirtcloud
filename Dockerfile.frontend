@@ -30,4 +30,6 @@ RUN npm run build
 
 FROM --platform=$BUILDPLATFORM caddy:2.6.4-alpine AS frontend
 
-COPY --from=frontend-build /frontend/apps/web/dist/ /usr/share/caddy/
+COPY --from=frontend-build /frontend/apps/web/dist/ /usr/share/caddy/client/
+
+COPY ./webvirtbackend/static/admin/ /usr/share/caddy/assets/admin/

@@ -24,11 +24,37 @@
   redir /admin / 301
   redir /metadata / 301
 
-  handle_path /account/ {
-    reverse_proxy http://backend:8000
+  handle /favicon.ico {
+    file_server
   }
-  handle_path /api/ {
-    reverse_proxy / backend:8000/api/
+  handle /robots.txt {
+    file_server
+  }
+  handle /admin* {
+    redir / 301
+  }
+  handle /metadata* {
+    redir / 301
+  }
+  
+  handle_path /account/* {
+    rewrite * /account{uri}
+    reverse_proxy http://backend:8000 {
+      header_up Host {host}
+      header_up X-Forwarded-Proto {scheme}
+      header_up X-Forwarded-For {remote}
+      header_up X-Real-IP {remote}
+    }
+  }
+
+  handle_path /v1/* {
+    rewrite * /api/v1{uri}
+    reverse_proxy http://backend:8000 {
+      header_up Host {host}
+      header_up X-Forwarded-Proto {scheme}
+      header_up X-Forwarded-For {remote}
+      header_up X-Real-IP {remote}
+    }
   }
 }
 
@@ -37,39 +63,68 @@
   redir /admin / 301
   redir /metadata / 301
 
-  handle_path /account/ {
-    reverse_proxy http://backend:8000
+  handle /favicon.ico {
+    file_server
+  }
+  handle /robots.txt {
+    file_server
+  }
+  handle /admin* {
+    redir / 301
+  }
+  handle /metadata* {
+    redir / 301
+  }
+  
+  handle_path /account/* {
+    rewrite * /account{uri}
+    reverse_proxy http://backend:8000 {
+      header_up Host {host}
+      header_up X-Forwarded-Proto {scheme}
+      header_up X-Forwarded-For {remote}
+      header_up X-Real-IP {remote}
+    }
   }
 
-  handle_path /api/ {
-    reverse_proxy http://backend:8000
+  handle_path /v1/* {
+    rewrite * /api/v1{uri}
+    reverse_proxy http://backend:8000 {
+      header_up Host {host}
+      header_up X-Forwarded-Proto {scheme}
+      header_up X-Forwarded-For {remote}
+      header_up X-Real-IP {remote}
+    }
   }
 }
 
 {$MANAGE_DOMAIN}:80 {
-  redir / /admin/ 301
-
-  reverse_proxy backend:8000
+  redir / /admin 301
+  reverse_proxy http://backend:8000
 }
 
 {$MANAGE_DOMAIN}:443 {
   tls internal
-  redir / /admin/ 301
-
-  reverse_proxy backend:8000
+  redir / /admin 301
+  reverse_proxy http://backend:8000
 }
 
 {$CONSOLE_DOMAIN}:80 {
-  reverse_proxy / novnc:6080
+  reverse_proxy http://novnc:6080
 } 
 
 {$CONSOLE_DOMAIN}:443 {
   tls internal
-  reverse_proxy / novnc:6080
+  reverse_proxy http://novnc:6080
 } 
 
 169.254.169.254:80 {
-  handle_path /metadata/ {
-    reverse_proxy http://backend:8000
+  handle_path /metadata/* {
+    rewrite * /metadata{uri}
+    reverse_proxy http://backend:8000 {
+      header_up Host {host}
+      header_up X-Forwarded-Proto {scheme}
+      header_up X-Forwarded-For {remote}
+      header_up X-Real-IP {remote}
+    }
   }
 }
