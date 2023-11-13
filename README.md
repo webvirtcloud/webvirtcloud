@@ -34,8 +34,18 @@ docker compose build
 
 5. Run the Docker container with the production settings (ENV):
 
-Rename `docker-compose.override.yml-example` to `docker-compose.override.yml` change domain records on yours inside the file and run the following command:
+ Create file `custom.env` add the next variables with your domain records:
 
+```text
+BASE_DOMAIN=webvirt.local
+API_DOMAIN=api.webvirt.local
+ASSETS_DOMAIN=assets.webvirt.local
+CLIENT_DOMAIN=client.webvirt.local
+MANAGE_DOMAIN=manage.webvirt.local
+CONSOLE_DOMAIN=console.webvirt.local
+```
+
+Run docker compose:
 
 ```bash
 docker compose up -d

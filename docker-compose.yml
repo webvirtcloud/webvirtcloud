@@ -12,12 +12,9 @@ services:
       - 443:443
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-    environment:
-      API_DOMAIN: "api.webvirt.cloud"
-      ASSETS_DOMAIN: "assets.webvirt.cloud"
-      CLIENT_DOMAIN: "client.webvirt.cloud"
-      MANAGE_DOMAIN: "manage.webvirt.cloud"
-      CONSOLE_DOMAIN: "console.webvirt.cloud"
+    env_file:
+      - global.env
+      - custom.env
   backend:
     build:
       context: .
@@ -27,17 +24,9 @@ services:
     ports:
       - 127.0.0.1:8000:8000
     command: gunicorn webvirtcloud.wsgi:application --bind 0.0.0.0:8000
-    environment:
-      DB_HOST: mariadb
-      DB_PORT: 3306
-      DB_NAME: webvirtcloud
-      DB_USER: django
-      DB_PASSWORD: django
-      PYTHONOPTIMIZE: 1
-      ANSIBLE_HOST_KEY_CHECKING: 0
-      ANSIBLE_PARAMIKO_LOOK_FOR_KEYS: 0
-      DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
-      CELERY_BROKER_URL: "amqp://django:django@rabbitmq:5672/webvirtcloud"
+    env_file:
+      - global.env
+      - custom.env
     depends_on:
       - mariadb
   novnc:
@@ -49,13 +38,9 @@ services:
     ports:
       - 127.0.0.1:6080:6080
     command: python3 manage.py novncd --verbose
-    environment:
-      DB_HOST: mariadb
-      DB_PORT: 3306
-      DB_NAME: webvirtcloud
-      DB_USER: django
-      DB_PASSWORD: django
-      DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
+    env_file:
+      - global.env
+      - custom.env
     depends_on:
       - mariadb
   worker:
@@ -65,16 +50,9 @@ services:
     container_name: webvirtcloud-worker
     hostname: worker
     command: celery -A webvirtcloud worker -l info
-    environment:
-      DB_HOST: mariadb
-      DB_PORT: 3306
-      DB_NAME: webvirtcloud
-      DB_USER: django
-      DB_PASSWORD: django
-      ANSIBLE_HOST_KEY_CHECKING: 0
-      ANSIBLE_PARAMIKO_LOOK_FOR_KEYS: 0
-      DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
-      CELERY_BROKER_URL: "amqp://django:django@rabbitmq:5672/webvirtcloud"
+    env_file:
+      - global.env
+      - custom.env
     depends_on:
       - mariadb
       - rabbitmq
@@ -85,17 +63,9 @@ services:
     container_name: webvirtcloud-scheduler
     hostname: scheduler
     command: celery -A webvirtcloud beat -l info
-    environment:
-      DB_HOST: mariadb
-      DB_PORT: 3306
-      DB_NAME: webvirtcloud
-      DB_USER: django
-      DB_PASSWORD: django
-      PYTHONOPTIMIZE: 1
-      ANSIBLE_HOST_KEY_CHECKING: 0
-      ANSIBLE_PARAMIKO_LOOK_FOR_KEYS: 0
-      DJANGO_SETTINGS_MODULE: webvirtcloud.settings.production
-      CELERY_BROKER_URL: "amqp://django:django@rabbitmq:5672/webvirtcloud"
+    env_file:
+      - global.env
+      - custom.env
     depends_on:
       - worker
       - mariadb
@@ -106,16 +76,13 @@ services:
     hostname: mariadb
     volumes:
       - ./.mysql:/var/lib/mysql
-    environment:
-      MARIADB_DATABASE: webvirtcloud
-      MARIADB_USER: django
-      MARIADB_PASSWORD: django
-      MARIADB_ROOT_PASSWORD: root
+    env_file:
+      - global.env
+      - custom.env
   rabbitmq:
     image: rabbitmq:3.10.13
     container_name: webvirtcloud-rabbitmq
     hostname: rabbitmq
-    environment:
-      RABBITMQ_DEFAULT_USER: django
-      RABBITMQ_DEFAULT_PASS: django
-      RABBITMQ_DEFAULT_VHOST: /webvirtcloud
+    env_file:
+      - global.env
+      - custom.env
