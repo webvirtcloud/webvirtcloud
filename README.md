@@ -38,7 +38,7 @@ Rename `docker-compose.override.yml-example` to `docker-compose.override.yml` ch
 
 
 ```bash
-docker compose -f docker-compose.yml up -d
+docker compose up -d
 ```
 
 6. Run the database migrations:
