@@ -11,12 +11,14 @@
 
 {$CLIENT_DOMAIN}:80 {
   root * /usr/share/caddy/client/
+  try_files {path} {path}/ /index.html
   file_server
 }
 
 {$CLIENT_DOMAIN}:443 {
   tls internal
   root * /usr/share/caddy/client/
+  try_files {path} {path}/ /index.html
   file_server
 }
 
