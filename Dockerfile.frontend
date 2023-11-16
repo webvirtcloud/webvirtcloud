@@ -25,8 +25,10 @@ FROM --platform=$BUILDPLATFORM frontend-deps AS frontend-build
 WORKDIR /frontend/apps/web/
 
 COPY ./webvirtfrontend/apps/web/ /frontend/apps/web/
+COPY ./global.env /frontend/global.env
+COPY ./custom.env /frontend/custom.env
 
-RUN npm run build
+RUN set -a; . /frontend/global.env; . /frontend/custom.env; set +a; npm run build
 
 FROM --platform=$BUILDPLATFORM caddy:2.6.4-alpine AS frontend
 
