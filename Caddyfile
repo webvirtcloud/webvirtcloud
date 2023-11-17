@@ -1,6 +1,5 @@
 (cors) {
   @cors_preflight method OPTIONS
-  @cors header Origin *
 
   handle @cors_preflight {
     header Access-Control-Allow-Origin *
@@ -11,13 +10,6 @@
     header Content-Type "text/plain charset=UTF-8"
     header Content-Length "0"
     respond "" 204
-  }
-
-  handle @cors {
-    header Access-Control-Allow-Origin *
-    header Access-Control-Allow-Credentials true
-    header Access-Control-Allow-Methods "GET, POST, PUT, OPTIONS, DELETE"
-    header Access-Control-Allow-Headers "Accept,Content-Type,Authorization"
   }
 }
 
@@ -46,7 +38,7 @@
 }
 
 {$API_DOMAIN}:80 {
-  import cors {scheme}://{$API_DOMAIN}
+  import cors
   redir /admin / 301
   redir /metadata / 301
 
@@ -70,6 +62,7 @@
       header_up X-Forwarded-Proto {scheme}
       header_up X-Forwarded-For {remote}
       header_up X-Real-IP {remote}
+      header_down Access-Control-Allow-Origin *
     }
   }
 
@@ -80,13 +73,14 @@
       header_up X-Forwarded-Proto {scheme}
       header_up X-Forwarded-For {remote}
       header_up X-Real-IP {remote}
+      header_down Access-Control-Allow-Origin *
     }
   }
 }
 
 {$API_DOMAIN}:443 {
+  import cors
   tls internal
-  import cors {scheme}://{$API_DOMAIN}
   
   redir /admin / 301
   redir /metadata / 301
@@ -111,6 +105,7 @@
       header_up X-Forwarded-Proto {scheme}
       header_up X-Forwarded-For {remote}
       header_up X-Real-IP {remote}
+      header_down Access-Control-Allow-Origin *
     }
   }
 
@@ -121,6 +116,7 @@
       header_up X-Forwarded-Proto {scheme}
       header_up X-Forwarded-For {remote}
       header_up X-Real-IP {remote}
+      header_down Access-Control-Allow-Origin *
     }
   }
 }
