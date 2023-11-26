@@ -82,6 +82,40 @@ http://admin.webvirt.local
 http://client.webvirt.local
 ```
 
+## Update controller ##
+
+To update WebVirtCloud, follow these steps:
+
+1. Stop the Docker container:
+
+```bash
+docker compose down
+```
+
+2. Pull the latest changes from the repository:
+
+```bash
+git pull
+```
+
+3. Update the submodules:
+
+```bash
+git submodule update
+```
+
+4. Build the Docker image:
+
+```bash
+docker compose build --no-cache
+```
+
+5. Run the Docker container:
+
+```bash
+docker compose up -d
+```
+
 ## Compute configuration ##
 
 More information about the hypervisor configuration can be found in the [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) repository.
