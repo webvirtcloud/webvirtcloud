@@ -2,7 +2,7 @@
 
 WebVirtCloud is a web-based virtualization platform that allows users to manage and create virtual machines on a remote server. It uses git submodules to build the backend and frontend components of the platform.
 
-## Backend and Frontend configuration (BETA) ##
+## Controller configuration (BETA) ##
 
 To install WebVirtCloud, follow these steps:
 
@@ -22,8 +22,7 @@ cd webvirtcloud
 3. Initialize and update the submodules:
 
 ```bash
-git submodule init webvirtbackend
-git submodule init webvirtfrontend
+git submodule init webvirtbackend webvirtfrontend
 git submodule update
 ```
 
@@ -34,7 +33,9 @@ docker compose build
 
 5. Run the Docker container with the production settings (ENV):
 
- Create file `custom.env` add the next variables with your domain records:
+Create file `custom.env` add the next variables with your domain records. 
+
+Example `custom.env` for domain `webvirt.local`:
 
 ```text
 BASE_DOMAIN=webvirt.local
@@ -43,6 +44,14 @@ ASSETS_DOMAIN=assets.webvirt.local
 CLIENT_DOMAIN=client.webvirt.local
 MANAGE_DOMAIN=manage.webvirt.local
 CONSOLE_DOMAIN=console.webvirt.local
+```
+
+Check the `global.env` file for more information about the variables.
+
+* If you want to use controller on your local machine you can use domain `webvirt.local` and you need add the next line to `/etc/hosts` file.
+
+```text
+127.0.0.1 api.webvirt.local client.webvirt.local manage.webvirt.local assets.webvirt.local console.webvirt.local
 ```
 
 Run docker compose:
@@ -61,7 +70,19 @@ docker compose exec backend python3 manage.py migrate
 docker compose exec backend python3 manage.py loaddata initial_data
 ```
 
-## Hypervisor configuration ##
+8. Open the Admin WebVirtCloud interface in your browser:
+
+```url
+http://admin.webvirt.local
+```
+
+9. Open the Client WebVirtCloud interface in your browser:
+
+```url
+http://client.webvirt.local
+```
+
+## Compute configuration ##
 
 More information about the hypervisor configuration can be found in the [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) repository.
 
