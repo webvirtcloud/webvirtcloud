@@ -26,12 +26,7 @@ git submodule init webvirtbackend webvirtfrontend
 git submodule update
 ```
 
-4. Build the Docker image:
-```bash
-docker compose build
-```
-
-5. Run the Docker container with the production settings (ENV):
+4. Run the Docker container with the production settings (ENV):
 
 Create file `custom.env` add the next variables with your domain records. 
 
@@ -47,6 +42,11 @@ CONSOLE_DOMAIN=console.webvirt.local
 ```
 
 Check the `global.env` file for more information about the variables.
+
+5. Build the Docker image:
+```bash
+docker compose build
+```
 
 * If you want to use controller on your local machine you can use domain `webvirt.local` and you need add the next line to `/etc/hosts` file.
 
