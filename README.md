@@ -116,6 +116,12 @@ docker compose build --no-cache
 docker compose up -d
 ```
 
+6. Run the database migrations:
+
+```bash
+docker compose exec backend python3 manage.py migrate
+```
+
 ## Compute configuration ##
 
 More information about the hypervisor configuration can be found in the [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) repository.
