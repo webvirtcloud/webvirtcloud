@@ -14,16 +14,16 @@ EOF
 function start_webvirtcloud() {
     ININT_DB=false
 
-    # Check submodules
-    if [ -z "$(ls -A "webvirtbackend")" ]; then
-        init_submodules
-    fi
-
     # Check if custom.env exists
     if [ ! -f custom.env ]; then
         echo "File custom.env not found!"
         echo -e "\nRun '$0 env' first\n"
         exit 1
+    fi
+
+    # Check submodules
+    if [ -z "$(ls -A "webvirtbackend")" ]; then
+        init_submodules
     fi
 
     # Check if .mysql directory exists
