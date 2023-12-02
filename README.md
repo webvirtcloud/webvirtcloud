@@ -14,75 +14,35 @@ git clone https://github.com/webvirtcloud/webvirtcloud.git
 
 2. Change into the webvirtcloud directory:
 
-
 ```bash
 cd webvirtcloud
 ```
 
-3. Initialize and update the submodules:
+3. Run script for deploy WebVirtCloud:
 
 ```bash
-git submodule init webvirtbackend webvirtfrontend
-git submodule update
+./webvirtcloud.sh env
 ```
 
-4. Run the Docker container with the production settings (ENV):
-
-Create file `custom.env` add the next variables with your domain records. 
-
-Example `custom.env` for domain `*.webvirt.local`:
-
-```text
-BASE_DOMAIN=webvirt.local
-API_DOMAIN=api.webvirt.local
-ASSETS_DOMAIN=assets.webvirt.local
-CLIENT_DOMAIN=client.webvirt.local
-MANAGE_DOMAIN=manage.webvirt.local
-CONSOLE_DOMAIN=console.webvirt.local
-```
-
-Check the `global.env` file for more information about the variables.
-
-5. Build the Docker image:
-```bash
-docker compose build
-```
-
-* If you want to use controller on your local machine you can use domain `webvirt.local` and you need add the next line to `/etc/hosts` file.
-
-```text
-127.0.0.1 api.webvirt.local client.webvirt.local manage.webvirt.local assets.webvirt.local console.webvirt.local
-```
-
-Run docker compose:
+4. Start WebVirtCloud:
 
 ```bash
-docker compose up -d
+./webvirtcloud.sh start
 ```
 
-6. Run the database migrations:
-```bash
-docker compose exec backend python3 manage.py migrate
-```
-
-7. Load the initial data:
-```bash
-docker compose exec backend python3 manage.py loaddata initial_data
-```
-
-8. Open the Admin WebVirtCloud interface in your browser:
-
-```url
-http://manage.webvirt.local
-```
-
-9. Open the Client WebVirtCloud interface in your browser:
+6. Open client side in browser (example for domain: `webvirt.local`):
 
 ```url
 http://client.webvirt.local
 ```
 
-10. Open the assets domain if you use `*.webvirt.local` domain to allow SSL certificate in browser:
+7. Open admin side in browser (example for domain: `webvirt.local`):
+
+```url
+http://manage.webvirt.local
+```
+
+If you use `webvirt.local` wildcard domain you need to allow SSL certificate in browser (optional):
 
 ```url
 https://assets.webvirt.local
@@ -90,42 +50,10 @@ https://assets.webvirt.local
 
 ## Update controller ##
 
-To update WebVirtCloud, follow these steps:
-
-1. Stop the Docker container:
+Run script for update:
 
 ```bash
-docker compose down
-```
-
-2. Pull the latest changes from the repository:
-
-```bash
-git pull
-```
-
-3. Update the submodules:
-
-```bash
-git submodule update
-```
-
-4. Build the Docker image:
-
-```bash
-docker compose build --no-cache
-```
-
-5. Run the Docker container:
-
-```bash
-docker compose up -d
-```
-
-6. Run the database migrations:
-
-```bash
-docker compose exec backend python3 manage.py migrate
+./webvirtcloud.sh update
 ```
 
 ## Compute configuration ##
