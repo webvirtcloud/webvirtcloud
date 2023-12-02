@@ -2,6 +2,11 @@
 
 WebVirtCloud is a web-based virtualization platform that allows users to manage and create virtual machines on a remote server. It uses git submodules to build the backend and frontend components of the platform.
 
+## Requirements ##
+
+* [Docker](https://www.docker.com/get-started/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
+
 ## Controller configuration (BETA) ##
 
 To install WebVirtCloud, follow these steps:
