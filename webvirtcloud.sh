@@ -31,8 +31,10 @@ function start_webvirtcloud() {
         ININT_DB=true
     fi
 
-    echo "Start WebVirtCloud..."
+    echo "Building WebVirtCloud..."
     docker compose build --no-cache
+    
+    echo "Start WebVirtCloud..."
     docker compose up -d
     
     # Init database
