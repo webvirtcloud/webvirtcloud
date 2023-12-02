@@ -30,7 +30,7 @@ git submodule update
 
 Create file `custom.env` add the next variables with your domain records. 
 
-Example `custom.env` for domain `webvirt.local`:
+Example `custom.env` for domain `*.webvirt.local`:
 
 ```text
 BASE_DOMAIN=webvirt.local
@@ -73,13 +73,19 @@ docker compose exec backend python3 manage.py loaddata initial_data
 8. Open the Admin WebVirtCloud interface in your browser:
 
 ```url
-http://admin.webvirt.local
+http://manage.webvirt.local
 ```
 
 9. Open the Client WebVirtCloud interface in your browser:
 
 ```url
 http://client.webvirt.local
+```
+
+10. Open the assets domain if you use `*.webvirt.local` domain to allow SSL certificate in browser:
+
+```url
+https://assets.webvirt.local
 ```
 
 ## Update controller ##
