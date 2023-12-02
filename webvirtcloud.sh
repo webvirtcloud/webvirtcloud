@@ -14,6 +14,11 @@ EOF
 function start_webvirtcloud() {
     ININT_DB=false
 
+    # Check submodules
+    if [ -z "$(ls -A "webvirtbackend")" ]; then
+        init_submodules
+    fi
+
     # Check if custom.env exists
     if [ ! -f custom.env ]; then
         echo "File custom.env not found!"
@@ -32,13 +37,32 @@ function start_webvirtcloud() {
     
     # Init database
     if [ "$ININT_DB" = true ]; then
-        docker compose exec backend python manage.py migrate
-        docker compose exec backend python manage.py loaddata initial_data
+        migrate_database
+        load_initial_data
     fi
 }
 
+# Migrate database
+function migrate_database() {
+    echo "Migrating database..."
+    docker compose exec backend python manage.py migrate
+}
+
+# Load initial data
+function load_initial_data() {
+    echo "Loading initial data..."
+    docker compose exec backend python manage.py loaddata initial_data
+}
+
+# Init and update submodules
+function init_submodules() {
+    echo "Init submodules..."
+    git submodule init webvirtbackend webvirtcloud
+    git submodule update
+}
+
 # Restart docker compose
-function stop_webvirtcloud() {
+function restart_webvirtcloud() {
     echo "Restarting WebVirtCloud..."
     docker compose restart
 }
@@ -106,6 +130,7 @@ case "$1" in
         stop_webvirtcloud
         git_pull
         start_webvirtcloud
+        migrate_database
         ;;
     "restart")
         restart_webvirtcloud
