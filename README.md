@@ -53,6 +53,22 @@ If you use `webvirt.local` wildcard domain you need to allow SSL certificate in 
 https://assets.webvirt.local
 ```
 
+## Credentials ##
+
+Default credentials for admin side:
+
+```bash
+username: admin@webvirt.cloud
+password: admin
+```
+
+Default credentials for client side (will be deleted after BETA):
+
+```bash
+username: user@webvirt.cloud
+password: 1qaz2wsx
+```
+
 ## Update controller ##
 
 Run script for update:
