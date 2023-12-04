@@ -90,6 +90,7 @@ function add_to_custom_env() {
     echo "API_DOMAIN=api.${domain_name}" >> custom.env
     echo "ASSETS_DOMAIN=assets.${domain_name}" >> custom.env
     echo "CLIENT_DOMAIN=client.${domain_name}" >> custom.env
+    echo "MANAGE_DOMAIN=manage.${domain_name}" >> custom.env
     echo "CONSOLE_DOMAIN=console.${domain_name}" >> custom.env
     echo -e "\nWildcard domain: "${domain_name}" added to custom.env\n"
 }
