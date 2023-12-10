@@ -60,8 +60,7 @@ function load_initial_data() {
 # Init and update submodules
 function init_submodules() {
     echo "Init submodules..."
-    git submodule init webvirtbackend webvirtfrontend
-    git submodule update
+    git submodule update --init --recursive webvirtbackend webvirtfrontend
 }
 
 # Restart docker compose
