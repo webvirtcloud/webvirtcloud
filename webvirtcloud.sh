@@ -79,6 +79,7 @@ function stop_webvirtcloud() {
 function git_pull() {
     echo "Pulling latest changes..."
     git pull
+    git submodule update
 }
 
 # Add base domain to custom.env
