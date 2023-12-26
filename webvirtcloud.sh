@@ -32,7 +32,7 @@ function start_webvirtcloud() {
     fi
 
     echo "Building WebVirtCloud..."
-    docker compose build --no-cache
+    docker compose build backend --no-cache
     
     echo "Start WebVirtCloud..."
     docker compose up -d
