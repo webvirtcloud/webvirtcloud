@@ -62,12 +62,7 @@ username: admin@webvirt.cloud
 password: admin
 ```
 
-Default credentials for client side (will be deleted after BETA):
-
-```bash
-username: user@webvirt.cloud
-password: 1qaz2wsx
-```
+You can create new user in admin side or register new user in client side.
 
 ## Update controller ##
 
