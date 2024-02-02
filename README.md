@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://cloud-assets.webvirt.cloud/images/github-preview.png">
+</p>
+
 # WebVirtCloud #
 
 WebVirtCloud is a web-based virtualization platform that allows users to manage and create virtual machines on a remote server. It uses git submodules to build the backend and frontend components of the platform.
