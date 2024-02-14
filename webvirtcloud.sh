@@ -39,16 +39,8 @@ function start_webvirtcloud() {
     
     # Init database
     if [ "$ININT_DB" = true ]; then
-        sleep 5
-        migrate_database
         load_initial_data
     fi
-}
-
-# Migrate database
-function migrate_database() {
-    echo "Migrating database..."
-    docker compose exec backend python manage.py migrate
 }
 
 # Load initial data

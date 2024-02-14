@@ -1,6 +1,7 @@
 version: "3.7"
 
 services:
+
   frontend:
     build:
       context: .
@@ -15,6 +16,7 @@ services:
     env_file:
       - global.env
       - custom.env
+
   backend:
     build:
       context: .
@@ -28,7 +30,24 @@ services:
       - global.env
       - custom.env
     depends_on:
-      - mariadb
+      backend_db_migration:
+        condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+
+  backend_db_migration:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: webvirtcloud-db-migration
+    command: python3 manage.py migrate --noinput
+    env_file:
+      - global.env
+      - custom.env
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
   novnc:
     build:
       context: .
@@ -42,7 +61,9 @@ services:
       - global.env
       - custom.env
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
+
   worker:
     build:
       context: .
@@ -53,9 +74,21 @@ services:
     env_file:
       - global.env
       - custom.env
+    healthcheck:
+      test: celery inspect ping
+      start_period: 1m
+      start_interval: 10s
+      interval: 1m
+      timeout: 5s
+      retries: 3
     depends_on:
-      - mariadb
-      - rabbitmq
+      backend_db_migration:
+        condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
   scheduler:
     build:
       context: .
@@ -67,9 +100,15 @@ services:
       - global.env
       - custom.env
     depends_on:
-      - worker
-      - mariadb
-      - rabbitmq
+      backend_db_migration:
+        condition: service_completed_successfully
+      worker:
+        condition: service_healthy
+      mariadb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
   mariadb:
     image: mariadb:10.6.10
     container_name: webvirtcloud-mariadb
@@ -79,6 +118,14 @@ services:
     env_file:
       - global.env
       - custom.env
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      start_period: 1m
+      start_interval: 10s
+      interval: 1m
+      timeout: 5s
+      retries: 3
+
   rabbitmq:
     image: rabbitmq:3.10.13
     container_name: webvirtcloud-rabbitmq
@@ -86,3 +133,8 @@ services:
     env_file:
       - global.env
       - custom.env
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
