@@ -126,7 +126,6 @@ case "$1" in
         stop_webvirtcloud
         git_pull
         start_webvirtcloud
-        migrate_database
         ;;
     "restart")
         restart_webvirtcloud
