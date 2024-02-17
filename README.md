@@ -4,14 +4,30 @@
 
 # WebVirtCloud #
 
-WebVirtCloud is a web-based virtualization platform that allows users to manage and create virtual machines on a remote server. It uses git submodules to build the backend and frontend components of the platform.
+WebVirtCloud is a web-based virtualization platform that allows users to manage and create virtual machines on a remote server. You just need to install WebVirtCloud on a server or even your laptop or PC and you can use it to create, manage, and delete virtual machines. It is a self-hosted alternative to platforms like DigitalOcean, Linode, and Vultr.
+
+## Features ##
+
+* **User management**: WebVirtCloud allows you to create and manage users.
+* **Virtual machine management**: You can create, manage, and delete virtual machines on a remote server.
+* **Virtual machine templates**: Pre-configured virtual machine templates, such as Ubuntu, Debian, Fedora, CentOS, Almalinux and Rocky Linux.
+* **Firewall management**: You can manage the firewall rules for your virtual machines.
+* **Floating IP management**: You can manage floating IPs for your virtual machines.
+
+## How it works ##
+
+We have two components: the **controller** and the **compute**. The controller is the web interface that allows you to manage your virtual machines. The [compute](https://github.com/webvirtcloud/webvirtcompute) is the hypervisor that runs the virtual machines.
+
+## Multi region support ##
+
+WebVirtCloud supports multi-region. You can have multiple compute nodes in different regions and manage them from the same controller. 
 
 ## Requirements ##
 
 * [Docker](https://www.docker.com/get-started/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Controller configuration (BETA) ##
+## Controller configuration ##
 
 To install WebVirtCloud, follow these steps:
 
@@ -76,9 +92,23 @@ Run script for update:
 ./webvirtcloud.sh update
 ```
 
-## Compute configuration ##
+## Additional settings ##
 
-More information about the hypervisor configuration can be found in the [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) repository.
+You can change the default settings in the `custom.env` file. Just copy variables you want to change from the `global.env` file and change them in the `custom.env` file. Example for mail settings:
+
+```bash
+# Email environment variables
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_HOST_USER = admin
+EMAIL_HOST_PASSWORD = admin
+EMAIL_USE_TLS = True
+EMAIL_FROM = "WebVirtCloud <noreply@gmail.com>"
+```
+
+## Compute configuration (hypervisor) ##
+
+More information about the compute configuration can be found in the [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) repository.
 
 ## License ##
 
