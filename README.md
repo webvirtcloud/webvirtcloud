@@ -92,7 +92,7 @@ Run script for update:
 ./webvirtcloud.sh update
 ```
 
-** Warning: ** Don't forget update [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) daemon on nodes after update controller.
+** Warning: ** Don't forget update [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute?tab=readme-ov-file#update-webvirtcompute-daemon) daemon on nodes after update controller.
 
 ## Additional settings ##
 
