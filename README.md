@@ -92,6 +92,8 @@ Run script for update:
 ./webvirtcloud.sh update
 ```
 
+** Warning: ** Don't forget update [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) daemon on nodes after update controller.
+
 ## Additional settings ##
 
 You can change the default settings in the `custom.env` file. Just copy variables you want to change from the `global.env` file and change them in the `custom.env` file. Example for mail settings:
