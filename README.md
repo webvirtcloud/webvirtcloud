@@ -26,6 +26,8 @@ WebVirtCloud supports multi-region. You can have multiple compute nodes in diffe
 
 * [Docker](https://www.docker.com/get-started/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
+* You may also use the following below
+``` curl -fsSL https://get.docker.com/ | sh ```
 
 ## Controller configuration ##
 
