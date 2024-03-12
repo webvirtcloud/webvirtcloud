@@ -67,10 +67,18 @@ http://client.webvirt.local
 http://manage.webvirt.local
 ```
 
-If you use `webvirt.local` wildcard domain you need to allow SSL certificate in browser (optional):
+**Warning**: If you use `webvirt.local` or your own wildcard domain you need to allow SSL certificate in browser.
+
+For assets:
 
 ```url
 https://assets.webvirt.local
+```
+
+and for API:
+
+```url
+https://api.webvirt.local
 ```
 
 ## Credentials ##
