@@ -18,6 +18,10 @@ WebVirtCloud is a web-based virtualization platform that allows users to manage 
 
 We have two components: the **controller** and the **compute**. The controller is the web interface that allows you to manage your virtual machines. The [compute](https://github.com/webvirtcloud/webvirtcompute) is the hypervisor that runs the virtual machines.
 
+## Recommended setup ##
+
+We recommend running the controller and the compute on separate servers. The controller can be installed on a server or even your laptop or PC. The compute should be installed on a server with virtualization support (e.g. KVM).
+
 ## Multi region support ##
 
 WebVirtCloud supports multi-region. You can have multiple compute nodes in different regions and manage them from the same controller. 
