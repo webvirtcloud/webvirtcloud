@@ -1,142 +1,193 @@
-version: "3.7"
-
+################
+version: "3.9"
 services:
-
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    container_name: webvirtcloud-frontend
-    hostname: frontend
+################
+#
+#
+###########################################################################
+  CN_WebVirtCloud_Front:
+    # ------------------------------------------------------------------- #
+    image: "pikatsuto/webvirtcloud-frontend"
+    restart: "always"
+    # ------------------------------------------------------------------- #
+    container_name: "CN_WebVirtCloud_Front"
+    hostname: "CN_WebVirtCloud_Front"
+    network_mode: "bridge"
+    # ------------------------------------------------------------------- #
     ports:
-      - 80:80
-      - 443:443
+      - "80:80/tcp"
+      - "443:443/tcp"
+    # ------------------------------------------------------------------- #
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-    env_file:
-      - global.env
-      - custom.env
-
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: webvirtcloud-backend
-    hostname: backend
+      - "VL_Caddy:/etc/caddy"
+    # ------------------------------------------------------------------- #
+    environment:
+      # Domain environment variables
+      BASE_DOMAIN: "localhost.unidash.fr"
+      API_DOMAIN: "api.localhost.unidash.fr"
+      ASSETS_DOMAIN: "assets.localhost.unidash.fr"
+      CLIENT_DOMAIN: "client.localhost.unidash.fr"
+      MANAGE_DOMAIN: "manage.localhost.unidash.fr"
+      CONSOLE_DOMAIN: "console.localhost.unidash.fr"
+      # Email environment variables
+      EMAIL_FROM: "WebVirtCloud <noreply@gmail.com>"
+###########################################################################
+#
+#
+###########################################################################
+  CN_WebVirtCloud_Back:
+    # ------------------------------------------------------------------- #
+    image: "pikatsuto/webvirtcloud-backend"
+    restart: "always"
+    # ------------------------------------------------------------------- #
+    container_name: "CN_WebVirtCloud_Back"
+    hostname: "CN_WebVirtCloud_Back"
+    network_mode: "bridge"
+    # ------------------------------------------------------------------- #
     ports:
-      - 127.0.0.1:8000:8000
-    command: gunicorn webvirtcloud.wsgi:application --bind 0.0.0.0:8000
-    env_file:
-      - global.env
-      - custom.env
-    depends_on:
-      backend_db_migration:
-        condition: service_completed_successfully
-      mariadb:
-        condition: service_healthy
-
-  backend_db_migration:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: webvirtcloud-db-migration
-    command: python3 manage.py migrate --noinput
-    env_file:
-      - global.env
-      - custom.env
-    depends_on:
-      mariadb:
-        condition: service_healthy
-
-  novnc:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: webvirtcloud-novnc
-    hostname: novnc
-    ports:
-      - 127.0.0.1:6080:6080
-    command: python3 manage.py novncd --verbose
-    env_file:
-      - global.env
-      - custom.env
-    depends_on:
-      mariadb:
-        condition: service_healthy
-
-  worker:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: webvirtcloud-worker
-    hostname: worker
-    command: celery -A webvirtcloud worker -l info
-    env_file:
-      - global.env
-      - custom.env
+      - "127.0.0.1:6080:6080/tcp"
+      - "127.0.0.1:8000:8000/tcp"
+    # ------------------------------------------------------------------- #
+    links:
+      - "CN_WebVirtCloud_RabbitMQ:rabbitmq"
+      - "CN_WebVirtCloud_MariaDB:db"
+    # ------------------------------------------------------------------- #
+    environment:
+      # Domain environment variables
+      BASE_DOMAIN: "localhost.unidash.fr"
+      API_DOMAIN: "api.localhost.unidash.fr"
+      ASSETS_DOMAIN: "assets.localhost.unidash.fr"
+      CLIENT_DOMAIN: "client.localhost.unidash.fr"
+      MANAGE_DOMAIN: "manage.localhost.unidash.fr"
+      CONSOLE_DOMAIN: "console.localhost.unidash.fr"
+      # DB connection environment variables
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: "webvirtcloud"
+      DB_USER: "django"
+      DB_PASSWORD: "django"
+      # Email environment variables
+      EMAIL_HOST: "smtp.gmail.com"
+      EMAIL_PORT: 587
+      EMAIL_HOST_USER: "admin"
+      EMAIL_HOST_PASSWORD: "admin"
+      EMAIL_USE_TLS: True
+      EMAIL_FROM: "WebVirtCloud <noreply@gmail.com>"
+      # Python environment variables
+      PYTHONOPTIMIZE: 1
+      # Ansible environment variables
+      ANSIBLE_HOST_KEY_CHECKING: 0
+      ANSIBLE_PARAMIKO_LOOK_FOR_KEYS: 0
+      # Django environment variables
+      DJANGO_SETTINGS_MODULE: "webvirtcloud.settings.production"
+      # Celery environment variables
+      CELERY_BROKER_URL: "amqp://django:django@rabbitmq:5672//webvirtcloud"
+    # ------------------------------------------------------------------- #
     healthcheck:
-      test: [ "CMD", "celery", "inspect", "ping" ]
-      start_period: 1m
-      start_interval: 10s
-      interval: 1m
-      timeout: 5s
-      retries: 3
+      # ----------------------------------------------------------------- #
+      test: 
+        - "CMD"
+        - "celery"
+        - "inspect"
+        - "ping"
+      # ----------------------------------------------------------------- #
+      start_period: '1m'
+      start_interval: '10s'
+      interval: '1m'
+      timeout: '5s'
+      retries: 4
+    # ------------------------------------------------------------------- #
     depends_on:
-      backend_db_migration:
-        condition: service_completed_successfully
-      mariadb:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-
-  scheduler:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: webvirtcloud-scheduler
-    hostname: scheduler
-    command: celery -A webvirtcloud beat -l info
-    env_file:
-      - global.env
-      - custom.env
-    depends_on:
-      backend_db_migration:
-        condition: service_completed_successfully
-      worker:
-        condition: service_healthy
-      mariadb:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-
-  mariadb:
-    image: mariadb:10.6.10
-    container_name: webvirtcloud-mariadb
-    hostname: mariadb
+      # ----------------------------------------------------------------- #
+      CN_WebVirtCloud_MariaDB:
+        condition: "service_healthy"
+      # ----------------------------------------------------------------- #
+      CN_WebVirtCloud_RabbitMQ:
+        condition: "service_healthy"
+###########################################################################
+#
+#
+###########################################################################
+  CN_WebVirtCloud_MariaDB:
+    # ------------------------------------------------------------------- #
+    image: "mariadb:10.6.10"
+    restart: "always"
+    # ------------------------------------------------------------------- #
+    container_name: "CN_WebVirtCloud_MariaDB"
+    hostname: "CN_WebVirtCloud_MariaDB"
+    network_mode: "bridge"
+    # ------------------------------------------------------------------- #
     volumes:
-      - ./.mysql:/var/lib/mysql
-    env_file:
-      - global.env
-      - custom.env
+      - "VL_MariaDB:/var/lib/mysql"
+    # ------------------------------------------------------------------- #
+    environment:
+      MARIADB_USER: "django"
+      MARIADB_PASSWORD: "django"
+      MARIADB_DATABASE: "webvirtcloud"
+      MARIADB_MYSQL_LOCALHOST_USER: 1
+      MARIADB_MYSQL_LOCALHOST_GRANTS: "USAGE"
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+    # ------------------------------------------------------------------- #
     healthcheck:
-      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
-      start_period: 1m
-      start_interval: 10s
-      interval: 1m
-      timeout: 5s
-      retries: 3
-
-  rabbitmq:
-    image: rabbitmq:3.10.13
-    container_name: webvirtcloud-rabbitmq
-    hostname: rabbitmq
-    env_file:
-      - global.env
-      - custom.env
+      # ----------------------------------------------------------------- #
+      test:
+        - "CMD"
+        - "healthcheck.sh"
+        - "--su-mysql"
+        - "--connect"
+        - "--innodb_initialized"
+      # ----------------------------------------------------------------- #
+      start_period: "1m"
+      start_interval: "10s"
+      interval: "1m"
+      timeout: "5s"
+      retries: 4
+###########################################################################
+#
+#
+###########################################################################
+  CN_WebVirtCloud_RabbitMQ:
+    # ------------------------------------------------------------------- #
+    image: "rabbitmq:3.10.13"
+    restart: "always"
+    # ------------------------------------------------------------------- #
+    container_name: "CN_WebVirtCloud_RabbitMQ"
+    hostname: "CN_WebVirtCloud_RabbitMQ"
+    network_mode: "bridge"
+    # ------------------------------------------------------------------- #
+    environment:
+      RABBITMQ_DEFAULT_USER: "django"
+      RABBITMQ_DEFAULT_PASS: "django"
+      RABBITMQ_DEFAULT_VHOST: "/webvirtcloud"
+    # ------------------------------------------------------------------- #
     healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
-      start_period: 1m
-      start_interval: 10s
-      interval: 30s
-      timeout: 30s
-      retries: 3
+      # ----------------------------------------------------------------- #
+      test: 
+        - "CMD"
+        - "rabbitmq-diagnostics"
+        - "-q"
+        - "ping"
+      # ----------------------------------------------------------------- #
+      start_period: "1m"
+      start_interval: "10s"
+      interval: "30s"
+      timeout: "30s"
+      retries: 4
+###########################################################################
+#
+#
+###########################
+# Déclaration des volumes #
+###########################
+volumes:
+  # ------------------ #
+  VL_Caddy:
+    name: "VL_Caddy"
+    external: false
+    driver: "local"
+  # ------------------ #
+  VL_MariaDB:
+    name: "VL_MariaDB"
+    external: false
+    driver: "local"
+  # ------------------ #

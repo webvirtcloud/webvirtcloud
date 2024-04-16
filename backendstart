@@ -1,0 +1,8 @@
+#!/bin/bash
+
+python3 manage.py migrate --noinput
+
+gunicorn webvirtcloud.wsgi:application --bind 0.0.0.0:8000 &
+python3 manage.py novncd --verbose &
+celery -A webvirtcloud worker -l info &
+celery -A webvirtcloud beat -l info

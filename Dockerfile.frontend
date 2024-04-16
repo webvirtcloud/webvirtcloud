@@ -15,11 +15,9 @@
 FROM --platform=$BUILDPLATFORM node:18-alpine AS frontend-deps
 
 WORKDIR /frontend/apps/web/
-
 COPY ./webvirtfrontend/ /frontend/
 
 RUN npm install
-
 FROM --platform=$BUILDPLATFORM frontend-deps AS frontend-build
 
 WORKDIR /frontend/apps/web/
@@ -29,9 +27,10 @@ COPY ./global.env /frontend/global.env
 COPY ./custom.env /frontend/custom.env
 
 RUN set -a; . /frontend/global.env; . /frontend/custom.env; set +a; npm run build
-
 FROM --platform=$BUILDPLATFORM caddy:2.6.4-alpine AS frontend
 
 COPY --from=frontend-build /frontend/apps/web/dist/ /usr/share/caddy/client/
-
 COPY ./webvirtbackend/static/admin/ /usr/share/caddy/assets/admin/
+
+RUN rm -rf /etc/caddy/Caddyfile
+COPY ./Caddyfile /etc/caddy/Caddyfile
