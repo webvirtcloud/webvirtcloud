@@ -35,37 +35,20 @@ WebVirtCloud supports multi-region. You can have multiple compute nodes in diffe
 
 To install WebVirtCloud, follow these steps:
 
-1. Clone the repository:
+1. Copy the compose, change URL and start:
 
+_this work with portainer and in cli_
 ```bash
-git clone https://github.com/webvirtcloud/webvirtcloud.git
+docker compose up -d
 ```
 
-2. Change into the webvirtcloud directory:
-
-```bash
-cd webvirtcloud
-```
-
-3. Run script for deploy WebVirtCloud:
-
-```bash
-./webvirtcloud.sh env
-```
-
-4. Start WebVirtCloud:
-
-```bash
-./webvirtcloud.sh start
-```
-
-6. Open client side in browser (example for domain: `webvirt.local`):
+2. Open client side in browser (example for domain: `webvirt.local`):
 
 ```url
 http://client.webvirt.local
 ```
 
-7. Open admin side in browser (example for domain: `webvirt.local`):
+3. Open admin side in browser (example for domain: `webvirt.local`):
 
 ```url
 http://manage.webvirt.local
