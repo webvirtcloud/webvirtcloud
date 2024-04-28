@@ -27,7 +27,8 @@ RUN \
     mariadb-dev \
     libffi-dev \
     bash \
-    openssl-dev; \
+    openssl-dev \
+    util-linux; \
   fc-cache -f; \
   rm -rf /var/cache/apk/*
 
@@ -48,10 +49,11 @@ FROM --platform=$BUILDPLATFORM backend-deps AS backend
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-WORKDIR /backend
-
 COPY backendstart /usr/local/bin/
 RUN chmod +x /usr/local/bin/backendstart
 COPY ./webvirtbackend/ /backend/
+
+WORKDIR /backend
+RUN yes | sed 's/y/admin/g' | adduser admin
 
 CMD bash /usr/local/bin/backendstart

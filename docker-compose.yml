@@ -14,12 +14,17 @@ services:
     hostname: "CN_WebVirtCloud_Front"
     network_mode: "bridge"
     # ------------------------------------------------------------------- #
+    links:
+      - 'CN_WebVirtCloud_Back:backend'
+      - 'CN_WebVirtCloud_Back:novnc'
+    # ------------------------------------------------------------------- #
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
     # ------------------------------------------------------------------- #
     volumes:
-      - "VL_Caddy:/etc/caddy"
+      - "VL_Caddy_Etc:/etc/caddy"
+      - "VL_Caddy_Admin_Assets:/usr/share/caddy/assets/admin/"
     # ------------------------------------------------------------------- #
     environment:
       # Domain environment variables
@@ -44,22 +49,18 @@ services:
     hostname: "CN_WebVirtCloud_Back"
     network_mode: "bridge"
     # ------------------------------------------------------------------- #
-    ports:
-      - "127.0.0.1:6080:6080/tcp"
-      - "127.0.0.1:8000:8000/tcp"
+    expose:
+      - "6080/tcp"
+      - "8000/tcp"
     # ------------------------------------------------------------------- #
     links:
       - "CN_WebVirtCloud_RabbitMQ:rabbitmq"
       - "CN_WebVirtCloud_MariaDB:db"
     # ------------------------------------------------------------------- #
+    volumes:
+      - "VL_Caddy_Admin_Assets:/backend/static/admin/"
+    # ------------------------------------------------------------------- #
     environment:
-      # Domain environment variables
-      BASE_DOMAIN: "localhost.unidash.fr"
-      API_DOMAIN: "api.localhost.unidash.fr"
-      ASSETS_DOMAIN: "assets.localhost.unidash.fr"
-      CLIENT_DOMAIN: "client.localhost.unidash.fr"
-      MANAGE_DOMAIN: "manage.localhost.unidash.fr"
-      CONSOLE_DOMAIN: "console.localhost.unidash.fr"
       # DB connection environment variables
       DB_HOST: db
       DB_PORT: 3306
@@ -181,8 +182,13 @@ services:
 ###########################
 volumes:
   # ------------------ #
-  VL_Caddy:
-    name: "VL_Caddy"
+  VL_Caddy_Etc:
+    name: "VL_Caddy_Etc"
+    external: false
+    driver: "local"
+  # ------------------ #
+  VL_Caddy_Admin_Assets:
+    name: "VL_Caddy_Admin_Assets"
     external: false
     driver: "local"
   # ------------------ #

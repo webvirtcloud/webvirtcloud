@@ -133,12 +133,12 @@
 }
 
 {$CONSOLE_DOMAIN}:80 {
-  reverse_proxy http://novnc:6080
+  reverse_proxy http://backend:6080
 } 
 
 {$CONSOLE_DOMAIN}:443 {
   tls internal
-  reverse_proxy http://novnc:6080
+  reverse_proxy http://backend:6080
 } 
 
 169.254.169.254:80 {
