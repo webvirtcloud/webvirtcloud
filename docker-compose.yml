@@ -12,7 +12,6 @@ services:
     # ------------------------------------------------------------------- #
     links:
       - 'CN_WebVirtCloud_Back:backend'
-      - 'CN_WebVirtCloud_Back:novnc'
     # ------------------------------------------------------------------- #
     ports:
       - "80:80/tcp"
@@ -24,14 +23,12 @@ services:
     # ------------------------------------------------------------------- #
     environment:
       # Domain environment variables
-      BASE_DOMAIN: "webvirt.local"
-      API_DOMAIN: "api.webvirt.local"
-      ASSETS_DOMAIN: "assets.webvirt.local"
-      CLIENT_DOMAIN: "client.webvirt.local"
-      MANAGE_DOMAIN: "manage.webvirt.local"
-      CONSOLE_DOMAIN: "console.webvirt.local"
-      # Email environment variables
-      EMAIL_FROM: "WebVirtCloud <noreply@gmail.com>"
+      BASE_DOMAIN: "localhost.unidash.fr"
+      API_DOMAIN: "api.localhost.unidash.fr"
+      ASSETS_DOMAIN: "assets.localhost.unidash.fr"
+      CLIENT_DOMAIN: "client.localhost.unidash.fr"
+      MANAGE_DOMAIN: "manage.localhost.unidash.fr"
+      CONSOLE_DOMAIN: "console.localhost.unidash.fr"
 ###########################################################################
 #
 #
@@ -57,6 +54,13 @@ services:
       - "VL_Caddy_Admin_Assets:/backend/static/admin/"
     # ------------------------------------------------------------------- #
     environment:
+      # Domain environment variables
+      BASE_DOMAIN: "localhost.unidash.fr"
+      API_DOMAIN: "api.localhost.unidash.fr"
+      ASSETS_DOMAIN: "assets.localhost.unidash.fr"
+      CLIENT_DOMAIN: "client.localhost.unidash.fr"
+      MANAGE_DOMAIN: "manage.localhost.unidash.fr"
+      CONSOLE_DOMAIN: "console.localhost.unidash.fr"
       # DB connection environment variables
       DB_HOST: db
       DB_PORT: 3306
