@@ -76,7 +76,7 @@ function git_pull() {
 
 # Add base domain to custom.env
 function add_to_custom_env() {
-    echo -e "Enter your wildcard domain. Example: webvirt.local"
+    echo -e "Enter your wildcard domain. By default: webvirtcloud.app"
     read -p "Enter: " domain_name
     echo "BASE_DOMAIN=${domain_name}" > custom.env
     echo "API_DOMAIN=api.${domain_name}" >> custom.env

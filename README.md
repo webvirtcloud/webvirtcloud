@@ -59,30 +59,30 @@ cd webvirtcloud
 ./webvirtcloud.sh start
 ```
 
-6. Open client side in browser (example for domain: `webvirt.local`):
+6. Open client side in browser (example for domain: `webvirtcloud.app`):
 
 ```url
-http://client.webvirt.local
+http://client.webvirtcloud.app
 ```
 
-7. Open admin side in browser (example for domain: `webvirt.local`):
+7. Open admin side in browser (example for domain: `webvirtcloud.app`):
 
 ```url
-http://manage.webvirt.local
+http://manage.webvirtcloud.app
 ```
 
-**Warning**: If you use `webvirt.local` or your own wildcard domain you need to allow SSL certificate in browser.
+**Warning**: If you use `webvirtcloud.app` or your own wildcard domain you need to allow SSL certificate in browser.
 
 For assets:
 
 ```url
-https://assets.webvirt.local
+https://assets.webvirtcloud.app
 ```
 
 and for API:
 
 ```url
-https://api.webvirt.local
+https://api.webvirtcloud.app
 ```
 
 ## Credentials ##
