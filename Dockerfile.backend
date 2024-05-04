@@ -24,10 +24,10 @@ WORKDIR /requirements
 COPY ./webvirtbackend/requirements/production.txt /requirements/requirements.txt
 COPY ./optional-requirements.txt* /requirements/
 
-RUN pip install -U pip wheel setuptools
-RUN pip install -r requirements.txt
-RUN if [ -e optional-requirements.txt ]; then \
-        pip install -r optional-requirements.txt; \
+RUN pip install -U uv; \
+    uv pip install --system -r requirements.txt; \
+    if [ -e optional-requirements.txt ]; then \
+    uv pip install --system -r optional-requirements.txt; \
     fi
 
 FROM --platform=$BUILDPLATFORM backend-deps AS backend
