@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.frontend
+    image: webvirtcloud:frontend
     container_name: webvirtcloud-frontend
     hostname: frontend
     ports:
@@ -19,6 +20,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
+    image: webvirtcloud:backend
     container_name: webvirtcloud-backend
     hostname: backend
     ports:
@@ -34,9 +36,7 @@ services:
         condition: service_healthy
 
   backend_db_migration:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
+    image: webvirtcloud:backend
     container_name: webvirtcloud-db-migration
     command: python3 manage.py migrate --noinput
     env_file:
@@ -47,9 +47,7 @@ services:
         condition: service_healthy
 
   novnc:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
+    image: webvirtcloud:backend
     container_name: webvirtcloud-novnc
     hostname: novnc
     ports:
@@ -63,9 +61,7 @@ services:
         condition: service_healthy
 
   worker:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
+    image: webvirtcloud:backend
     container_name: webvirtcloud-worker
     hostname: worker
     command: celery -A webvirtcloud worker -l info
@@ -88,9 +84,7 @@ services:
         condition: service_healthy
 
   scheduler:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
+    image: webvirtcloud:backend
     container_name: webvirtcloud-scheduler
     hostname: scheduler
     command: celery -A webvirtcloud beat -l info
