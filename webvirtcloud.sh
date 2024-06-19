@@ -102,11 +102,23 @@ help            Show this message
 EOF
 }
 
-# Check if docker installed
+# Check if Docker is installed
 if ! command -v docker &> /dev/null; then
-    echo -e "\nDocker not found! Please install docker first\n"
+    echo -e "\nDocker not found! Please install Docker first.\n"
     exit 1
 fi
+# Get Docker version
+docker_version=$(docker --version | grep -oP '\d+\.\d+\.\d+')
+# Define the required minimum version
+required_version="25.0.0"
+# Check if Docker version meets the requirement
+if [ "$docker_version" = "$(printf '%s\n' "$docker_version" "$required_version" | sort -V | head -n1)" ]; then
+    echo -e "\nDocker version $docker_version is sufficient.\n"
+else
+    echo -e "\nDocker version $docker_version is not sufficient. Please update Docker to version $required_version or later.\n"
+    exit 1
+fi
+# Check if Docker Compose is installed
 if docker compose version >/dev/null 2>&1; then
     DOCKER_COMPOSE_COMMAND="docker compose"
 elif command -v docker-compose >/dev/null 2>&1; then
