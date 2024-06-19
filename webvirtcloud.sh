@@ -30,12 +30,12 @@ function start_webvirtcloud() {
     if [ ! -d ".mysql" ]; then
         ININT_DB=true
     fi
-
+    
     echo "Building WebVirtCloud..."
-    docker compose build backend --no-cache
+    $DOCKER_COMPOSE_COMMAND build backend --no-cache
     
     echo "Start WebVirtCloud..."
-    docker compose up -d
+    $DOCKER_COMPOSE_COMMAND up -d
     
     # Init database
     if [ "$ININT_DB" = true ]; then
@@ -46,7 +46,7 @@ function start_webvirtcloud() {
 # Load initial data
 function load_initial_data() {
     echo "Loading initial data..."
-    docker compose exec backend python manage.py loaddata initial_data
+    $DOCKER_COMPOSE_COMMAND exec backend python manage.py loaddata initial_data
 }
 
 # Init and update submodules
@@ -58,13 +58,13 @@ function init_submodules() {
 # Restart docker compose
 function restart_webvirtcloud() {
     echo "Restarting WebVirtCloud..."
-    docker compose restart
+    $DOCKER_COMPOSE_COMMAND restart
 }
 
 # Stop docker compose
 function stop_webvirtcloud() {
     echo "Stop WebVirtCloud..."
-    docker compose down
+    $DOCKER_COMPOSE_COMMAND down
 }
 
 # Pull latest changes
@@ -105,6 +105,14 @@ EOF
 # Check if docker installed
 if ! command -v docker &> /dev/null; then
     echo -e "\nDocker not found! Please install docker first\n"
+    exit 1
+fi
+if docker compose version >/dev/null 2>&1; then
+    DOCKER_COMPOSE_COMMAND="docker compose"
+elif command -v docker-compose >/dev/null 2>&1; then
+    DOCKER_COMPOSE_COMMAND="docker-compose"
+else
+    echo "Neither 'docker compose' nor 'docker-compose' command found."
     exit 1
 fi
 
