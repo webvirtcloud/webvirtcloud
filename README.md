@@ -124,6 +124,10 @@ EMAIL_FROM = "WebVirtCloud <noreply@gmail.com>"
 
 More information about the compute configuration can be found in the [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) repository.
 
+## Private networking ##
+
+If you don't have additional network interfaces on your server for private network, you can use the [WireGuard](https://www.wireguard.com) VPN to create a private network between the controller and the compute.
+
 ## License ##
 
 WebVirtCloud is licensed under the Apache 2.0 License. See the `LICENSE` file for more information.
