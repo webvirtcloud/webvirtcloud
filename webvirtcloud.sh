@@ -10,6 +10,50 @@ cat << "EOF"
                                                                         
 EOF
 
+# Define minimum Docker version
+MIN_DOCKER_VERSION="25.0.0"
+DOCKER_VERSION=$(docker --version | awk '{print $3}' | sed 's/,//')
+
+# Check if Docker is installed
+if ! command -v docker &> /dev/null; then
+    echo -e "\nDocker not found! Please install Docker first.\n"
+    exit 1
+fi
+
+# Check docker version function
+check_docker_version() {
+  # Split version strings into arrays
+  IFS='.' read -r -a current_version <<< "$1"
+  IFS='.' read -r -a min_version <<< "$2"
+  for i in 0 1 2; do
+    # Check (major, minor, patch)
+    if [[ ${current_version[i]} -gt ${min_version[i]} ]]; then
+      return 0
+    elif [[ ${current_version[i]} -lt ${min_version[i]} ]]; then
+      return 1
+    fi
+  done
+  return 0
+}
+
+# Check if Docker version meets the requirement
+if check_docker_version "$DOCKER_VERSION" "$MIN_DOCKER_VERSION"; then
+    echo -e "\nDocker version $DOCKER_VERSION is sufficient.\n"
+else
+    echo -e "\nDocker version $DOCKER_VERSION is not sufficient. Please update Docker to version $MIN_DOCKER_VERSION or later.\n"
+    exit 1
+fi
+
+# Check if Docker Compose is installed
+if docker compose version > /dev/null 2>&1; then
+    DOCKER_COMPOSE_COMMAND="docker compose"
+elif command -v docker-compose > /dev/null 2>&1; then
+    DOCKER_COMPOSE_COMMAND="docker-compose"
+else
+    echo "Neither 'docker compose' nor 'docker-compose' command found."
+    exit 1
+fi
+
 # Start docker compose
 function start_webvirtcloud() {
     ININT_DB=false
@@ -77,14 +121,17 @@ function git_pull() {
 # Add base domain to custom.env
 function add_to_custom_env() {
     echo -e "Enter your wildcard domain. By default: webvirtcloud.app"
-    read -p "Enter: " domain_name
-    echo "BASE_DOMAIN=${domain_name}" > custom.env
-    echo "API_DOMAIN=api.${domain_name}" >> custom.env
-    echo "ASSETS_DOMAIN=assets.${domain_name}" >> custom.env
-    echo "CLIENT_DOMAIN=client.${domain_name}" >> custom.env
-    echo "MANAGE_DOMAIN=manage.${domain_name}" >> custom.env
-    echo "CONSOLE_DOMAIN=console.${domain_name}" >> custom.env
-    echo -e "\nWildcard domain: "${domain_name}" added to custom.env\n"
+    read -p "Enter: " DOMAIN_NAME
+    if [ -z "$DOMAIN_NAME" ]; then
+        DOMAIN_NAME="webvirtcloud.app"
+    fi
+    echo "BASE_DOMAIN=${DOMAIN_NAME}" > custom.env
+    echo "API_DOMAIN=api.${DOMAIN_NAME}" >> custom.env
+    echo "ASSETS_DOMAIN=assets.${DOMAIN_NAME}" >> custom.env
+    echo "CLIENT_DOMAIN=client.${DOMAIN_NAME}" >> custom.env
+    echo "MANAGE_DOMAIN=manage.${DOMAIN_NAME}" >> custom.env
+    echo "CONSOLE_DOMAIN=console.${DOMAIN_NAME}" >> custom.env
+    echo -e "\nWildcard domain: '"${DOMAIN_NAME}"' added to custom.env\n"
 }
 
 # Show help function
@@ -101,39 +148,6 @@ help            Show this message
 
 EOF
 }
-
-# Check if Docker is installed
-if ! command -v docker &> /dev/null; then
-    echo -e "\nDocker not found! Please install Docker first.\n"
-    exit 1
-fi
-
-# Check docker version function
-check_docker_version() {
-  # Split version strings into arrays
-  IFS='.' read -r -a current_version <<< "$1"
-  IFS='.' read -r -a min_version <<< "$2"
-  for i in 0 1 2; do
-    # Check (major, minor, patch)
-    if [[ ${current_version[i]} -gt ${min_version[i]} ]]; then
-      return 0
-    elif [[ ${current_version[i]} -lt ${min_version[i]} ]]; then
-      return 1
-    fi
-  done
-  return 0
-}
-
-# Get Docker version
-MIN_DOCKER_VERSION="25.0.0"
-DOCKER_VERSION=$(docker --version | awk '{print $3}' | sed 's/,//')
-# Check if Docker version meets the requirement
-if check_docker_version "$DOCKER_VERSION" "$MIN_DOCKER_VERSION"; then
-    echo -e "\nDocker version $DOCKER_VERSION is sufficient.\n"
-else
-    echo -e "\nDocker version $DOCKER_VERSION is not sufficient. Please update Docker to version $MIN_DOCKER_VERSION or later.\n"
-    exit 1
-fi
 
 # Run functions
 case "$1" in
