@@ -131,7 +131,7 @@ DOCKER_VERSION=$(docker --version | awk '{print $3}' | sed 's/,//')
 if check_docker_version "$DOCKER_VERSION" "$MIN_DOCKER_VERSION"; then
     echo -e "\nDocker version $DOCKER_VERSION is sufficient.\n"
 else
-    echo -e "\nDocker version $DOCKER_VERSION is not sufficient. Please update Docker to version $required_version or later.\n"
+    echo -e "\nDocker version $DOCKER_VERSION is not sufficient. Please update Docker to version $MIN_DOCKER_VERSION or later.\n"
     exit 1
 fi
 
