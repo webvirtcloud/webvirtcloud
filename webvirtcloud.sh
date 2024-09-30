@@ -107,24 +107,31 @@ if ! command -v docker &> /dev/null; then
     echo -e "\nDocker not found! Please install Docker first.\n"
     exit 1
 fi
+
+# Check docker version function
+check_docker_version() {
+  # Split version strings into arrays
+  IFS='.' read -r -a current_version <<< "$1"
+  IFS='.' read -r -a min_version <<< "$2"
+  for i in 0 1 2; do
+    # Check (major, minor, patch)
+    if [[ ${current_version[i]} -gt ${min_version[i]} ]]; then
+      return 0
+    elif [[ ${current_version[i]} -lt ${min_version[i]} ]]; then
+      return 1
+    fi
+  done
+  return 0
+}
+
 # Get Docker version
-docker_version=$(docker --version | grep -oP '\d+\.\d+\.\d+')
-# Define the required minimum version
-required_version="25.0.0"
+MIN_DOCKER_VERSION="25.0.0"
+DOCKER_VERSION=$(docker --version | awk '{print $3}' | sed 's/,//')
 # Check if Docker version meets the requirement
-if [ "$docker_version" = "$(printf '%s\n' "$docker_version" "$required_version" | sort -V | head -n1)" ]; then
-    echo -e "\nDocker version $docker_version is sufficient.\n"
+if check_docker_version "$DOCKER_VERSION" "$MIN_DOCKER_VERSION"; then
+    echo -e "\nDocker version $DOCKER_VERSION is sufficient.\n"
 else
-    echo -e "\nDocker version $docker_version is not sufficient. Please update Docker to version $required_version or later.\n"
-    exit 1
-fi
-# Check if Docker Compose is installed
-if docker compose version >/dev/null 2>&1; then
-    DOCKER_COMPOSE_COMMAND="docker compose"
-elif command -v docker-compose >/dev/null 2>&1; then
-    DOCKER_COMPOSE_COMMAND="docker-compose"
-else
-    echo "Neither 'docker compose' nor 'docker-compose' command found."
+    echo -e "\nDocker version $DOCKER_VERSION is not sufficient. Please update Docker to version $required_version or later.\n"
     exit 1
 fi
 
