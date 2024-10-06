@@ -71,7 +71,8 @@ http://client.webvirtcloud.app
 http://manage.webvirtcloud.app
 ```
 
-**Warning**: If you use `webvirtcloud.app` or your own wildcard domain you need to allow SSL certificate in browser.
+> [!WARNING]
+> If you use `webvirtcloud.app` or your own wildcard domain you need to allow SSL certificate in browser.
 
 For assets:
 
