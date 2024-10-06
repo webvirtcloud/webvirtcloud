@@ -83,8 +83,14 @@ function start_webvirtcloud() {
     
     # Init database
     if [ "$ININT_DB" = true ]; then
+        create_default_admin
         load_initial_data
     fi
+}
+
+function create_default_admin() {
+    echo "Creating 'admin@webvirt.cloud' user..."
+    $DOCKER_COMPOSE_COMMAND exec backend python manage.py loaddata account/fixtures/admin.json
 }
 
 # Load initial data
@@ -144,6 +150,7 @@ start           Start WebVirtCloud
 restart         Restart WebVirtCloud
 stop            Stop WebVirtCloud
 update          Update WebVirtCloud
+loaddata        Load initial data
 help            Show this message
 
 EOF
@@ -167,6 +174,9 @@ case "$1" in
         stop_webvirtcloud
         git_pull
         start_webvirtcloud
+        ;;
+    "loaddata")
+        load_initial_data
         ;;
     "restart")
         restart_webvirtcloud

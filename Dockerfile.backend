@@ -14,7 +14,8 @@
 
 FROM --platform=$BUILDPLATFORM python:3.10-alpine as backend-deps
 
-RUN apk add --no-cache gcc g++ pango fontconfig ttf-freefont font-noto terminus-font \
+RUN apk add --no-cache gcc g++ pango fontconfig openssh-client \
+                       ttf-freefont font-noto terminus-font \
                        musl-dev mariadb-dev libffi-dev openssl-dev; \
     fc-cache -f; \
     rm -rf /var/cache/apk/*

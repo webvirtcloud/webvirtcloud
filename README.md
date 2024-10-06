@@ -104,7 +104,14 @@ Run script for update:
 ./webvirtcloud.sh update
 ```
 
-** Warning: ** Don't forget update [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute?tab=readme-ov-file#update-webvirtcompute-daemon) daemon on nodes after update controller.
+If have installation before new features like `Load Balancer`, you need to add new size to database:
+
+```bash
+./webvirtcloud.sh loaddata
+```
+
+> [!WARNING]
+> Don't forget update [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute?tab=readme-ov-file#update-webvirtcompute-daemon) daemon on nodes after update controller.
 
 ## Additional settings ##
 
@@ -119,6 +126,13 @@ EMAIL_HOST_PASSWORD = admin
 EMAIL_USE_TLS = True
 EMAIL_FROM = "WebVirtCloud <noreply@gmail.com>"
 ```
+
+## Load Balancer ##
+
+Load Balancer is a new feature in WebVirtCloud. You can create a load balancer and add virtual machines to it. The load balancer will distribute the incoming traffic to the virtual machines. 
+
+> [!IMPORTANT]
+> Load Balancer required access from controller to private network for deploy and manage HaProxy on virtual machine.
 
 ## Compute configuration (hypervisor) ##
 
