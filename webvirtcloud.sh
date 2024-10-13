@@ -75,9 +75,12 @@ function start_webvirtcloud() {
         ININT_DB=true
     fi
     
-    echo "Building WebVirtCloud..."
+    echo "Building WebVirtCloud backend..."
     $DOCKER_COMPOSE_COMMAND build backend --no-cache
     
+    echo "Building WebVirtCloud frontend..."
+    $DOCKER_COMPOSE_COMMAND build frontend --no-cache
+
     echo "Start WebVirtCloud..."
     $DOCKER_COMPOSE_COMMAND up -d
     
@@ -138,6 +141,15 @@ function add_to_custom_env() {
     echo "MANAGE_DOMAIN=manage.${DOMAIN_NAME}" >> custom.env
     echo "CONSOLE_DOMAIN=console.${DOMAIN_NAME}" >> custom.env
     echo -e "\nWildcard domain: '"${DOMAIN_NAME}"' added to custom.env\n"
+
+    echo -e "Do you want to enable Load Balancer on client side? (yes/no)"
+    read -p "Enter: " ENABLE_LB
+    if [ "$ENABLE_LB" = "yes" ]; then
+        echo "VITE_LOADBALANCER=true" >> custom.env
+        echo -e "\nLoad Balancer enabled on client side\n"
+    else
+        echo -e "\nLoad Balancer is not enabled on client side\n"
+    fi
 }
 
 # Show help function
