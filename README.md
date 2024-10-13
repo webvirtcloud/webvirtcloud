@@ -13,6 +13,7 @@ WebVirtCloud is a web-based virtualization platform that allows users to manage 
 * **Virtual machine templates**: Pre-configured virtual machine templates, such as Ubuntu, Debian, Fedora, CentOS, Almalinux and Rocky Linux.
 * **Firewall management**: You can manage the firewall rules for your virtual machines.
 * **Floating IP management**: You can manage floating IPs for your virtual machines.
+* **Load Balancer**: You can create a load balancer and add virtual machines to it.
 
 ## How it works ##
 
@@ -130,7 +131,13 @@ EMAIL_FROM = "WebVirtCloud <noreply@gmail.com>"
 
 ## Load Balancer ##
 
-Load Balancer is a new feature in WebVirtCloud. You can create a load balancer and add virtual machines to it. The load balancer will distribute the incoming traffic to the virtual machines. 
+Load Balancer is a new feature in WebVirtCloud. You can create a load balancer and add virtual machines to it. The load balancer will distribute the incoming traffic to the virtual machines.
+
+Manually enable Load Balancer for client side (only if you have installed befeore Load Balancer feature):
+
+```bash
+echo "VITE_LOADBALANCER=true" >> custom.env
+```
 
 > [!IMPORTANT]
 > Load Balancer required access from controller to private network for deploy and manage HaProxy on virtual machine.
