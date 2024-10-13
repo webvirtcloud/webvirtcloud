@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM --platform=$BUILDPLATFORM python:3.10-alpine as backend-deps
+FROM --platform=$BUILDPLATFORM python:3.10-alpine AS backend-deps
 
 RUN apk add --no-cache gcc g++ pango fontconfig openssh-client \
                        ttf-freefont font-noto terminus-font \
