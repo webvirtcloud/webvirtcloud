@@ -48,7 +48,7 @@ git clone https://github.com/webvirtcloud/webvirtcloud.git
 cd webvirtcloud
 ```
 
-3. Copy Caddyfile from templates `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` to `Caddyfile`. For example, if you want to use a self-signed certificate:
+3. Copy `Caddyfile` from templates `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` to `Caddyfile`. For example, if you want to use a self-signed certificate:
 
 ```bash
 cp Caddyfile.selfsigned Caddyfile
