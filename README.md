@@ -48,13 +48,19 @@ git clone https://github.com/webvirtcloud/webvirtcloud.git
 cd webvirtcloud
 ```
 
-3. Run script for deploy WebVirtCloud:
+3. Copy Caddyfile from templates `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` to `Caddyfile`. For example, if you want to use a self-signed certificate:
+
+```bash
+cp Caddyfile.selfsigned Caddyfile
+```
+
+4. Run script for deploy WebVirtCloud:
 
 ```bash
 ./webvirtcloud.sh env
 ```
 
-4. Start WebVirtCloud:
+5. Start WebVirtCloud:
 
 ```bash
 ./webvirtcloud.sh start

@@ -3,6 +3,7 @@
 .caddy
 .mysql
 .vagrant
+Caddyfile
 custom.env
 optional-requirements.txt
 docker-compose.override.yml
