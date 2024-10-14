@@ -134,7 +134,8 @@ function add_to_custom_env() {
     if [ -z "$DOMAIN_NAME" ]; then
         DOMAIN_NAME="webvirtcloud.app"
     fi
-    echo "BASE_DOMAIN=${DOMAIN_NAME}" > custom.env
+    echo "EMAIL_DOMAIN=hostmaster@${DOMAIN_NAME}" > custom.env
+    echo "BASE_DOMAIN=${DOMAIN_NAME}" >> custom.env
     echo "API_DOMAIN=api.${DOMAIN_NAME}" >> custom.env
     echo "ASSETS_DOMAIN=assets.${DOMAIN_NAME}" >> custom.env
     echo "CLIENT_DOMAIN=client.${DOMAIN_NAME}" >> custom.env
