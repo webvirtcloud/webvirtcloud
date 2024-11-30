@@ -143,7 +143,16 @@ function add_to_custom_env() {
     echo "CONSOLE_DOMAIN=console.${DOMAIN_NAME}" >> custom.env
     echo -e "\nWildcard domain: '"${DOMAIN_NAME}"' added to custom.env\n"
 
-    echo -e "Do you want to enable Load Balancer on client side? (yes/no)"
+    echo -e "Do you want to enable show prices in sizes on client side? (yes/no)"
+    read -p "Enter: " ENABLE_PRICE
+    if [ "$ENABLE_PRICE" = "yes" ]; then
+        echo "VITE_DISPLAY_PRICES=true" >> custom.env
+        echo -e "\nShow prices enabled on client side\n"
+    else
+        echo -e "\nShow prices is not enabled on client side\n"
+    fi
+
+    echo -e "Do you want to enable Load Balancer features on client side? (yes/no)"
     read -p "Enter: " ENABLE_LB
     if [ "$ENABLE_LB" = "yes" ]; then
         echo "VITE_LOADBALANCER=true" >> custom.env
