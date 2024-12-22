@@ -5,3 +5,6 @@
 .devcontainer
 Dockfile
 docker-compose.yml
+webvirtbacked/.git
+webvirtbacked/.mysql
+webvirtbacked/.vscode
