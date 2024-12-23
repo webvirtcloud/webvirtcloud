@@ -33,9 +33,11 @@ RUN pip install -U uv; \
 
 FROM --platform=$BUILDPLATFORM backend-deps AS backend
 
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-
 WORKDIR /backend
 
 COPY ./webvirtbackend/ /backend/
+
+COPY --from=webvirtcloud:frontend /backend/templates/client/index.html /backend/templates/client/index.html
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1

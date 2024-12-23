@@ -32,6 +32,8 @@ RUN set -a; . /frontend/global.env; . /frontend/custom.env; set +a; npm run buil
 
 FROM --platform=$BUILDPLATFORM caddy:2.6.4-alpine AS frontend
 
-COPY --from=frontend-build /frontend/apps/web/dist/ /usr/share/caddy/client/
+COPY ./webvirtbackend/static/ /usr/share/caddy/
 
-COPY ./webvirtbackend/static/admin/ /usr/share/caddy/assets/admin/
+COPY --from=frontend-build /frontend/apps/web/dist/assets/ /usr/share/caddy/assets/
+COPY --from=frontend-build /frontend/apps/web/dist/index.html /backend/templates/client/index.html
+COPY --from=frontend-build /frontend/apps/web/dist/manifest.webmanifest /usr/share/caddy/manifest.webmanifest

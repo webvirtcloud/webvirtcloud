@@ -48,7 +48,7 @@ git clone https://github.com/webvirtcloud/webvirtcloud.git
 cd webvirtcloud
 ```
 
-3. Copy `Caddyfile` from templates `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` to `Caddyfile`. For example, if you want to use a self-signed certificate:
+3. Copy `Caddyfile` from templates `Caddyfile.selfsigned`, `Caddyfile.letsencrypt` or `Caddyfile.noncert` to `Caddyfile`. For example, if you want to use a self-signed certificate:
 
 ```bash
 cp Caddyfile.selfsigned Caddyfile
@@ -69,28 +69,13 @@ cp Caddyfile.selfsigned Caddyfile
 6. Open client side in browser (example for domain: `webvirtcloud.app`):
 
 ```url
-http://client.webvirtcloud.app
+https://webvirtcloud.app
 ```
 
 7. Open admin side in browser (example for domain: `webvirtcloud.app`):
 
 ```url
-http://manage.webvirtcloud.app
-```
-
-> [!WARNING]
-> If you use `webvirtcloud.app` or your own wildcard domain you need to allow SSL certificate in browser.
-
-For assets:
-
-```url
-https://assets.webvirtcloud.app
-```
-
-and for API:
-
-```url
-https://api.webvirtcloud.app
+https://webvirtcloud.app/admin
 ```
 
 ## Credentials ##

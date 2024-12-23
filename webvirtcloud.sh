@@ -75,12 +75,12 @@ function start_webvirtcloud() {
         ININT_DB=true
     fi
     
-    echo "Building WebVirtCloud backend..."
-    $DOCKER_COMPOSE_COMMAND build backend --no-cache
-    
     echo "Building WebVirtCloud frontend..."
     $DOCKER_COMPOSE_COMMAND build frontend --no-cache
 
+    echo "Building WebVirtCloud backend..."
+    $DOCKER_COMPOSE_COMMAND build backend --no-cache
+    
     echo "Start WebVirtCloud..."
     $DOCKER_COMPOSE_COMMAND up -d
     
@@ -129,19 +129,13 @@ function git_pull() {
 
 # Add base domain to custom.env
 function add_to_custom_env() {
-    echo -e "Enter your wildcard domain. By default: webvirtcloud.app"
+    echo -e "Enter your domain or IP address. By default: localhost"
     read -p "Enter: " DOMAIN_NAME
     if [ -z "$DOMAIN_NAME" ]; then
-        DOMAIN_NAME="webvirtcloud.app"
+        DOMAIN_NAME="localhost"
     fi
-    echo "EMAIL_DOMAIN=hostmaster@${DOMAIN_NAME}" > custom.env
-    echo "BASE_DOMAIN=${DOMAIN_NAME}" >> custom.env
-    echo "API_DOMAIN=api.${DOMAIN_NAME}" >> custom.env
-    echo "ASSETS_DOMAIN=assets.${DOMAIN_NAME}" >> custom.env
-    echo "CLIENT_DOMAIN=client.${DOMAIN_NAME}" >> custom.env
-    echo "MANAGE_DOMAIN=manage.${DOMAIN_NAME}" >> custom.env
-    echo "CONSOLE_DOMAIN=console.${DOMAIN_NAME}" >> custom.env
-    echo -e "\nWildcard domain: '"${DOMAIN_NAME}"' added to custom.env\n"
+    echo "DOMAIN_NAME=${DOMAIN_NAME}" > custom.env
+    echo -e "\nDomain: '"${DOMAIN_NAME}"' added to custom.env\n"
 
     echo -e "Do you want to enable show prices in sizes on client side? (yes/no)"
     read -p "Enter: " ENABLE_PRICE
