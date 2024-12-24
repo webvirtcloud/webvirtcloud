@@ -13,9 +13,9 @@
 	}
 }
 
-https://{$DOMAIN_NAME}:443 {
+https://{$DOMAIN_NAME} {
 	import cors
-	tls internal
+	tls /etc/caddy/certs/cert.pem /etc/caddy/certs/key.pem
 
 	handle_path /static/* {
 		encode gzip
@@ -40,7 +40,7 @@ https://{$DOMAIN_NAME}:443 {
 	}
 }
 
-http://169.254.169.254:80 {
+http://169.254.169.254 {
 	handle_path /metadata/* {
 		rewrite * /metadata{uri}
 		reverse_proxy http://backend:8000 {

@@ -18,7 +18,7 @@
 	}
 }
 
-https://{$DOMAIN_NAME}:443 {
+https://{$DOMAIN_NAME} {
 	import cors
 
 	handle_path /static/* {
@@ -44,7 +44,7 @@ https://{$DOMAIN_NAME}:443 {
 	}
 }
 
-http://169.254.169.254:80 {
+http://169.254.169.254 {
 	handle_path /metadata/* {
 		rewrite * /metadata{uri}
 		reverse_proxy http://backend:8000 {

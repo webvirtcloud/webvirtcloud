@@ -48,13 +48,23 @@ git clone https://github.com/webvirtcloud/webvirtcloud.git
 cd webvirtcloud
 ```
 
-3. Copy the `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` template to `Caddyfile` to configure TLS for domain names. The Caddy server does not support TLS for IP addresses. If you need to configure the server for an IP address without certificates, use the `Caddyfile.noncert` template. For example:
+3. Copy the `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` template to `Caddyfile` to configure TLS for domain names. The Caddy server does not support TLS for IP addresses. If you need to configure the server for an IP address without certificates, use the `Caddyfile.noncert` template. Simple trick how to use a domain name for IP address is to use [nip.io](https://nip.io) service.
+
+For example you have IP address `192.168.0.114` it means your domain name will be `192-168-0-114.nip.io`:
 
 ```bash
+mkdir -p .caddy/certs 
+openssl req -x509 -newkey rsa:4096 -keyout .caddy/certs/key.pem -out .caddy/certs/cert.pem -days 365 -nodes -subj "/CN=192-168-0-114.nip.io"
 cp Caddyfile.selfsigned Caddyfile
 ```
 
-4. Run script for deploy WebVirtCloud:
+or IP address without certificates:
+
+```bash
+cp Caddyfile.noncert Caddyfile
+```
+
+4. Run script for deploy WebVirtCloud.
 
 ```bash
 ./webvirtcloud.sh env
@@ -62,20 +72,20 @@ cp Caddyfile.selfsigned Caddyfile
 
 5. Start WebVirtCloud:
 
-```basha
+```bash
 ./webvirtcloud.sh start
 ```
 
-6. Open client side in browser (example for domain: `webvirtcloud.app`):
+6. Open client side in browser (example for domain: `192-168-0-114.nip.io`):
 
 ```url
-https://webvirtcloud.app
+https://192-168-0-114.nip.io
 ```
 
-7. Open admin side in browser (example for domain: `webvirtcloud.app`):
+7. Open admin side in browser (example for domain: `192-168-0-114.nip.io`):
 
 ```url
-https://webvirtcloud.app/admin
+https://192-168-0-114.nip.io/admin
 ```
 
 ## Credentials ##
