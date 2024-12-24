@@ -48,7 +48,7 @@ git clone https://github.com/webvirtcloud/webvirtcloud.git
 cd webvirtcloud
 ```
 
-3. Copy `Caddyfile` from templates `Caddyfile.selfsigned`, `Caddyfile.letsencrypt` or `Caddyfile.noncert` to `Caddyfile`. For example, if you want to use a self-signed certificate:
+3. Copy the `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` template to `Caddyfile` to configure TLS for domain names. The Caddy server does not support TLS for IP addresses. If you need to configure the server for an IP address without certificates, use the `Caddyfile.noncert` template. For example:
 
 ```bash
 cp Caddyfile.selfsigned Caddyfile
@@ -62,7 +62,7 @@ cp Caddyfile.selfsigned Caddyfile
 
 5. Start WebVirtCloud:
 
-```bash
+```basha
 ./webvirtcloud.sh start
 ```
 

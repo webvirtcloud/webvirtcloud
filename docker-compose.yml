@@ -14,6 +14,7 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./.caddy/data:/data
       - ./.caddy/config:/config
+      - ./.caddy/certs:/etc/caddy/certs
     env_file:
       - global.env
       - custom.env

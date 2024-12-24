@@ -1,19 +1,19 @@
 (cors) {
-  @cors_preflight method OPTIONS
+	@cors_preflight method OPTIONS
 
-  handle @cors_preflight {
-    header Access-Control-Allow-Origin *
-    header Access-Control-Allow-Credentials true
-    header Access-Control-Allow-Methods "GET, POST, PUT, OPTIONS, DELETE"
-    header Access-Control-Allow-Headers "Accept,Content-Type,Authorization"
-    header Access-Control-Max-Age "1728000"
-    header Content-Type "text/plain charset=UTF-8"
-    header Content-Length "0"
-    respond "" 204
-  }
+	handle @cors_preflight {
+		header Access-Control-Allow-Origin *
+		header Access-Control-Allow-Credentials true
+		header Access-Control-Allow-Methods "GET, POST, PUT, OPTIONS, DELETE"
+		header Access-Control-Allow-Headers "Accept,Content-Type,Authorization"
+		header Access-Control-Max-Age "1728000"
+		header Content-Type "text/plain charset=UTF-8"
+		header Content-Length "0"
+		respond "" 204
+	}
 }
 
-{$DOMAIN_NAME}:80 {
+http://{$DOMAIN_NAME}:80 {
 	import cors
 
 	handle_path /static/* {
@@ -29,7 +29,7 @@
 			header_down Access-Control-Allow-Origin *
 		}
 	}
-	
+
 	handle_path /novnc/* {
 		reverse_proxy http://novnc:6080 {
 			header_up Host {host}
@@ -39,7 +39,7 @@
 	}
 }
 
-169.254.169.254:80 {
+http://169.254.169.254:80 {
 	handle_path /metadata/* {
 		rewrite * /metadata{uri}
 		reverse_proxy http://backend:8000 {

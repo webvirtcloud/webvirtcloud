@@ -18,7 +18,7 @@
 	}
 }
 
-{$DOMAIN_NAME}:443 {
+https://{$DOMAIN_NAME}:443 {
 	import cors
 
 	handle_path /static/* {
@@ -34,7 +34,7 @@
 			header_down Access-Control-Allow-Origin *
 		}
 	}
-	
+
 	handle_path /novnc/* {
 		reverse_proxy http://novnc:6080 {
 			header_up Host {host}
@@ -44,7 +44,7 @@
 	}
 }
 
-169.254.169.254:80 {
+http://169.254.169.254:80 {
 	handle_path /metadata/* {
 		rewrite * /metadata{uri}
 		reverse_proxy http://backend:8000 {
