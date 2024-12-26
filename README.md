@@ -58,13 +58,13 @@ openssl req -x509 -newkey rsa:4096 -keyout .caddy/certs/key.pem -out .caddy/cert
 cp Caddyfile.selfsigned Caddyfile
 ```
 
-or IP address without certificates:
+or IP address without certificates (HTTP only):
 
 ```bash
 cp Caddyfile.noncert Caddyfile
 ```
 
-4. Run script for deploy WebVirtCloud.
+4. Run script for deploy WebVirtCloud (example for domain: `192-168-0-114.nip.io`):
 
 ```bash
 ./webvirtcloud.sh env
