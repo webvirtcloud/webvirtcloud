@@ -48,9 +48,13 @@ git clone https://github.com/webvirtcloud/webvirtcloud.git
 cd webvirtcloud
 ```
 
-3. To configure TLS for domain names, copy either the `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` template to Caddyfile. Note that the Caddy server does not support TLS for IP addresses. If you need to configure the server for an IP address without certificates, use the `Caddyfile.noncert` template.
+3. Configure the Caddy server: 
 
-If you have only an IP address but need a domain name, you can use the [nip.io](https://nip.io) service as a simple workaround. For example, if your IP address is 192.168.0.114, you can use the domain name `192-168-0-114.nip.io`. In the example below, we will use the domain name `webvirtcloud-192-168-0-114.nip.io` with self-signed certificates:
+    To configure TLS for the web server, copy either the `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` and without TLS `Caddyfile.noncert` template to `Caddyfile`. 
+
+    **NOTE**: Caddy web server does not support TLS for IP address.
+
+    If you want ot use TLS connection with IP address you can use [nip.io](https://nip.io) service as a simple workaround. For example, if your IP address is 192.168.0.114, you can use the domain name `192-168-0-114.nip.io`. In the example below, we will use the domain name `webvirtcloud-192-168-0-114.nip.io` with self-signed certificates:
 
 ```bash
 mkdir -p .caddy/certs 
