@@ -2,37 +2,33 @@
   <img src="https://cloud-assets.webvirt.cloud/images/github-preview.png">
 </p>
 
-# WebVirtCloud #
+# WebVirtCloud
 
-WebVirtCloud is a web-based virtualization platform that allows users to manage and create virtual machines on a remote server. You just need to install WebVirtCloud on a server or even your laptop or PC and you can use it to create, manage, and delete virtual machines. It is a self-hosted alternative to platforms like DigitalOcean, Linode, and Vultr.
+**WebVirtCloud** is a web platform for managing virtual machines (VMs) on remote servers. It offers an alternative to platforms like DigitalOcean, Linode, and Vultr, allowing users to host and control their virtual machines independently.
 
-## Features ##
+## Features
 
-* **User management**: WebVirtCloud allows you to create and manage users.
-* **Virtual machine management**: You can create, manage, and delete virtual machines on a remote server.
-* **Virtual machine templates**: Pre-configured virtual machine templates, such as Ubuntu, Debian, Fedora, CentOS, Almalinux and Rocky Linux.
-* **Firewall management**: You can manage the firewall rules for your virtual machines.
-* **Floating IP management**: You can manage floating IPs for your virtual machines.
-* **Load Balancer**: You can create a load balancer and add virtual machines to it.
+- **User Management:** Create and manage user accounts.
+- **VM Management:** Create, manage, and delete virtual machines on remote servers.
+- **VM Templates:** Pre-configured templates for Ubuntu, Debian, Fedora, CentOS, AlmaLinux, and Rocky Linux.
+- **Firewall Management:** Configure firewall rules for virtual machines.
+- **Floating IP Management:** Assign and manage floating IP addresses.
+- **Load Balancer:** Set up and manage load balancers to distribute traffic across virtual machines.
 
-## How it works ##
+## Architecture
 
-We have two components: the **controller** and the **compute**. The controller is the web interface that allows you to manage your virtual machines. The [compute](https://github.com/webvirtcloud/webvirtcompute) is the hypervisor that runs the virtual machines.
+WebVirtCloud consists of two main components:
+- **Controller:** A web interface to manage virtual machines.
+- **Compute Node:** A hypervisor that runs the virtual machines.
 
-## Recommended setup ##
+It is recommended to install the Controller and Compute Node on separate servers.
 
-We recommend running the controller and the compute on separate servers. The controller can be installed on a server or even your laptop or PC. The compute should be installed on a server with virtualization support (e.g. KVM).
+## Requirements
 
-## Multi region support ##
+- [Docker](https://www.docker.com/get-started/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-WebVirtCloud supports multi-region. You can have multiple compute nodes in different regions and manage them from the same controller. 
-
-## Requirements ##
-
-* [Docker](https://www.docker.com/get-started/)
-* [Docker Compose](https://docs.docker.com/compose/install/)
-
-## Controller configuration ##
+## Installing the Controller
 
 To install WebVirtCloud, follow these steps:
 
@@ -40,115 +36,106 @@ To install WebVirtCloud, follow these steps:
 
 ```bash
 git clone https://github.com/webvirtcloud/webvirtcloud.git
-```
-
-2. Change into the webvirtcloud directory:
-
-```bash
 cd webvirtcloud
 ```
 
-3. Configure the Caddy server: 
+2. Set up Caddy:
 
     To configure TLS for the web server, copy either the `Caddyfile.selfsigned` or `Caddyfile.letsencrypt` and without TLS `Caddyfile.noncert` template to `Caddyfile`. 
 
-    **NOTE**: Caddy web server does not support TLS for IP address.
+    > **NOTE**: Caddy does not support TLS for bare IP addresses. If you need TLS, you can use a domain name with a service like [nip.io](https://nip.io) as a workaround.
 
-    If you want ot use TLS connection with IP address you can use [nip.io](https://nip.io) service as a simple workaround. For example, if your IP address is 192.168.0.114, you can use the domain name `192-168-0-114.nip.io`. In the example below, we will use the domain name `webvirtcloud-192-168-0-114.nip.io` with self-signed certificates:
+    For example, if your IP address is 192.168.0.114, you can use `192-168-0-114.nip.io` as your domain name. Below, we demonstrate how to set up a self-signed certificate for the domain `webvirtcloud-192-168-0-114.nip.io`:
+
+- For TLS with self-signed certificates:
 
 ```bash
-mkdir -p .caddy/certs 
+mkdir -p .caddy/certs
 openssl req -x509 -newkey rsa:4096 -keyout .caddy/certs/key.pem -out .caddy/certs/cert.pem -days 365 -nodes -subj "/CN=webvirtcloud-192-168-0-114.nip.io"
 cp Caddyfile.selfsigned Caddyfile
 ```
 
-4. Run script for deploy WebVirtCloud (example for domain: `webvirtcloud-192-168-0-114.nip.io`):
+- Without TLS:
+
+```bash
+cp Caddyfile.noncert Caddyfile
+```
+
+3. Run the setup script:
 
 ```bash
 ./webvirtcloud.sh env
 ```
 
-5. Start WebVirtCloud:
+Example:
+
+```bash
+Enter your domain or IP address (only HTTP). Default: localhost
+Enter: webvirtcloud-192-168-0-114.nip.io
+```
+
+4. Start WebVirtCloud:
 
 ```bash
 ./webvirtcloud.sh start
 ```
 
-6. Open client side in browser (example for domain: `webvirtcloud-192-168-0-114.nip.io`):
+For first-time users, refer to the [Features](#features) section to explore the capabilities of WebVirtCloud.
 
-```url
-https://webvirtcloud-192-168-0-114.nip.io
-```
+## Accessing the Interface
 
-7. Open admin side in browser (example for domain: `webvirtcloud-192-168-0-114.nip.io`):
+- **User Panel:** [https://webvirtcloud-192-168-0-114.nip.io](https://webvirtcloud-192-168-0-114.nip.io)
+- **Admin Panel:** [https://webvirtcloud-192-168-0-114.nip.io/admin](https://webvirtcloud-192-168-0-114.nip.io/admin)
 
-```url
-https://webvirtcloud-192-168-0-114.nip.io/admin
-```
+Ensure your firewall allows access to ports 80 (HTTP) and 443 (HTTPS) for the WebVirtCloud interface.
 
-## Credentials ##
+## Default Credentials
 
-Default credentials for admin side:
+- **Username:** `admin@webvirt.cloud`
+- **Password:** `admin`
 
-```bash
-username: admin@webvirt.cloud
-password: admin
-```
+> **Warning:** It is critical to change the default credentials immediately after the first login to ensure security.
 
-You can create new user in admin side or register new user in client side.
+## Update the Controller
 
-## Update controller ##
-
-Run script for update:
+To update the controller, run:
 
 ```bash
 ./webvirtcloud.sh update
 ```
 
-If have installation before new features like `Load Balancer`, you need to add new size to database:
+If new features or templates are added:
 
 ```bash
 ./webvirtcloud.sh loaddata
 ```
 
-> [!WARNING]
-> Don't forget update [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute?tab=readme-ov-file#update-webvirtcompute-daemon) daemon on nodes after update controller.
+## Additional Settings
 
-## Additional settings ##
-
-You can change the default settings in the `custom.env` file. Just copy variables you want to change from the `global.env` file and change them in the `custom.env` file. Example for mail settings:
+Format environment variables consistently:
 
 ```bash
 # Email environment variables
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
-EMAIL_HOST_USER = admin
-EMAIL_HOST_PASSWORD = admin
-EMAIL_USE_TLS = True
-EMAIL_FROM = "WebVirtCloud <noreply@gmail.com>"
+EMAIL_HOST_USER=admin
+EMAIL_HOST_PASSWORD=admin
+EMAIL_USE_TLS=True
+EMAIL_FROM="WebVirtCloud <noreply@gmail.com>"
 ```
 
-## Load Balancer ##
+## Installing the Compute Node (Hypervisor)
 
-Load Balancer is a new feature in WebVirtCloud. You can create a load balancer and add virtual machines to it. The load balancer will distribute the incoming traffic to the virtual machines.
+See the [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) repository for detailed instructions.
 
-Manually enable Load Balancer for client side (only if you have installed befeore Load Balancer feature):
+> **Warning:** After updating the controller, make sure to update the [WebVirtCompute daemon](https://github.com/webvirtcloud/webvirtcompute?tab=readme-ov-file#update-webvirtcompute-daemon) on all compute nodes to ensure compatibility.
 
-```bash
-echo "VITE_LOADBALANCER=true" >> custom.env
-```
+## Private networking
 
-> [!IMPORTANT]
-> Load Balancer required access from controller to private network for deploy and manage HaProxy on virtual machine.
+If your server does not have additional network interfaces for a private network, you can use [WireGuard](https://www.wireguard.com) VPN to establish a private connection between the controller and the compute node.
 
-## Compute configuration (hypervisor) ##
+> **Important:** The Load Balancer feature requires access to the private network from the controller to deploy and manage HAProxy on a virtual machine.
 
-More information about the compute configuration can be found in the [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) repository.
-
-## Private networking ##
-
-If you don't have additional network interfaces on your server for private network, you can use the [WireGuard](https://www.wireguard.com) VPN to create a private network between the controller and the compute.
-
-## License ##
+## License
 
 WebVirtCloud is licensed under the Apache 2.0 License. See the `LICENSE` file for more information.

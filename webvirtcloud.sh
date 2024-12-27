@@ -129,7 +129,7 @@ function git_pull() {
 
 # Add base domain to custom.env
 function add_to_custom_env() {
-    echo -e "Enter your domain or IP address (only HTTP). By default: localhost"
+    echo -e "Enter your domain or IP address (only HTTP). Default: localhost"
     read -p "Enter: " DOMAIN_NAME
     if [ -z "$DOMAIN_NAME" ]; then
         DOMAIN_NAME="localhost"
