@@ -137,7 +137,7 @@ function add_to_custom_env() {
     echo "DOMAIN_NAME=${DOMAIN_NAME}" > env.local
     echo -e "\nDomain: '"${DOMAIN_NAME}"' added to env.local\n"
 
-    echo -e "Do you want to enable show prices in sizes on client side? (yes/no)"
+    echo -e "Do you want to enable show prices in sizes on client side? (yes/no). Default: no"
     read -p "Enter: " ENABLE_PRICE
     if [ "$ENABLE_PRICE" = "yes" ]; then
         echo "VITE_DISPLAY_PRICES=true" >> env.local
@@ -146,7 +146,7 @@ function add_to_custom_env() {
         echo -e "\nShow prices is not enabled on client side\n"
     fi
 
-    echo -e "Do you want to enable Load Balancer features on client side? (yes/no)"
+    echo -e "Do you want to enable Load Balancer features on client side? (yes/no). Default: no"
     read -p "Enter: " ENABLE_LB
     if [ "$ENABLE_LB" = "yes" ]; then
         echo "VITE_LOADBALANCER=true" >> env.local
