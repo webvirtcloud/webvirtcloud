@@ -4,7 +4,7 @@
 .mysql
 .vagrant
 Caddyfile
-custom.env
+env.local
 optional-requirements.txt
 docker-compose.override.yml
 webvirtbackend/.mysql

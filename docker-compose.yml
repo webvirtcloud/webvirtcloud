@@ -16,8 +16,8 @@ services:
       - ./.caddy/config:/config
       - ./.caddy/certs:/etc/caddy/certs
     env_file:
-      - global.env
-      - custom.env
+      - env.common
+      - env.local
 
   backend:
     build:
@@ -28,8 +28,8 @@ services:
     hostname: backend
     command: gunicorn webvirtcloud.wsgi:application --bind 0.0.0.0:8000
     env_file:
-      - global.env
-      - custom.env
+      - env.common
+      - env.local
     depends_on:
       backend_db_migration:
         condition: service_completed_successfully
@@ -41,8 +41,8 @@ services:
     container_name: webvirtcloud-db-migration
     command: python3 manage.py migrate --noinput
     env_file:
-      - global.env
-      - custom.env
+      - env.common
+      - env.local
     depends_on:
       mariadb:
         condition: service_healthy
@@ -53,8 +53,8 @@ services:
     hostname: novnc
     command: python3 manage.py novncd --verbose
     env_file:
-      - global.env
-      - custom.env
+      - env.common
+      - env.local
     depends_on:
       mariadb:
         condition: service_healthy
@@ -65,8 +65,8 @@ services:
     hostname: worker
     command: celery -A webvirtcloud worker -l info
     env_file:
-      - global.env
-      - custom.env
+      - env.common
+      - env.local
     healthcheck:
       test: [ "CMD", "celery", "inspect", "ping" ]
       start_period: 1m
@@ -88,8 +88,8 @@ services:
     hostname: scheduler
     command: celery -A webvirtcloud beat -l info
     env_file:
-      - global.env
-      - custom.env
+      - env.common
+      - env.local
     depends_on:
       backend_db_migration:
         condition: service_completed_successfully
@@ -107,8 +107,8 @@ services:
     volumes:
       - ./.mysql:/var/lib/mysql
     env_file:
-      - global.env
-      - custom.env
+      - env.common
+      - env.local
     healthcheck:
       test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
       start_period: 1m
@@ -122,8 +122,8 @@ services:
     container_name: webvirtcloud-rabbitmq
     hostname: rabbitmq
     env_file:
-      - global.env
-      - custom.env
+      - env.common
+      - env.local
     healthcheck:
       test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
       start_period: 1m

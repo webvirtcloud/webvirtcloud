@@ -112,7 +112,7 @@ If new features or templates are added:
 
 ## Additional Settings
 
-Format environment variables consistently:
+The `env.local` file is used to store environment variables. You can edit this file to define your environment-specific configurations. Ensure environment variables are formatted consistently, as shown below:
 
 ```bash
 # Email environment variables

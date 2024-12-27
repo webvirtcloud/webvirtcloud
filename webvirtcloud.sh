@@ -60,7 +60,7 @@ function start_webvirtcloud() {
 
     # Check if custom.env exists
     if [ ! -f custom.env ]; then
-        echo "File custom.env not found!"
+        echo "File env.local not found!"
         echo -e "\nRun '$0 env' first\n"
         exit 1
     fi
@@ -134,13 +134,13 @@ function add_to_custom_env() {
     if [ -z "$DOMAIN_NAME" ]; then
         DOMAIN_NAME="localhost"
     fi
-    echo "DOMAIN_NAME=${DOMAIN_NAME}" > custom.env
-    echo -e "\nDomain: '"${DOMAIN_NAME}"' added to custom.env\n"
+    echo "DOMAIN_NAME=${DOMAIN_NAME}" > env.local
+    echo -e "\nDomain: '"${DOMAIN_NAME}"' added to env.local\n"
 
     echo -e "Do you want to enable show prices in sizes on client side? (yes/no)"
     read -p "Enter: " ENABLE_PRICE
     if [ "$ENABLE_PRICE" = "yes" ]; then
-        echo "VITE_DISPLAY_PRICES=true" >> custom.env
+        echo "VITE_DISPLAY_PRICES=true" >> env.local
         echo -e "\nShow prices enabled on client side\n"
     else
         echo -e "\nShow prices is not enabled on client side\n"
@@ -149,7 +149,7 @@ function add_to_custom_env() {
     echo -e "Do you want to enable Load Balancer features on client side? (yes/no)"
     read -p "Enter: " ENABLE_LB
     if [ "$ENABLE_LB" = "yes" ]; then
-        echo "VITE_LOADBALANCER=true" >> custom.env
+        echo "VITE_LOADBALANCER=true" >> env.local
         echo -e "\nLoad Balancer enabled on client side\n"
     else
         echo -e "\nLoad Balancer is not enabled on client side\n"
