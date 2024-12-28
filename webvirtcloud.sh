@@ -58,8 +58,8 @@ fi
 function start_webvirtcloud() {
     ININT_DB=false
 
-    # Check if custom.env exists
-    if [ ! -f custom.env ]; then
+    # Check if env.local exists
+    if [ ! -f env.local ]; then
         echo "File env.local not found!"
         echo -e "\nRun '$0 env' first\n"
         exit 1
