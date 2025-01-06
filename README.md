@@ -85,7 +85,7 @@ For first-time users, refer to the [Features](#features) section to explore the 
 ## Accessing the Interface
 
 - **User Panel:** [https://webvirtcloud-192-168-0-114.nip.io](https://webvirtcloud-192-168-0-114.nip.io)
-- **Admin Panel:** [https://webvirtcloud-192-168-0-114.nip.io/admin](https://webvirtcloud-192-168-0-114.nip.io/admin)
+- **Admin Panel:** [https://webvirtcloud-192-168-0-114.nip.io/admin/](https://webvirtcloud-192-168-0-114.nip.io/admin/)
 
 Ensure your firewall allows access to ports 80 (HTTP) and 443 (HTTPS) for the WebVirtCloud interface.
 
