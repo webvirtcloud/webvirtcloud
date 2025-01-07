@@ -14,7 +14,7 @@
 
 FROM --platform=$BUILDPLATFORM python:3.10-alpine AS backend-deps
 
-RUN apk add --no-cache gcc g++ pango fontconfig openssh-client \
+RUN apk add --no-cache uv gcc g++ pango fontconfig openssh-client \
                        ttf-freefont font-noto terminus-font \
                        musl-dev mariadb-dev libffi-dev openssl-dev; \
     fc-cache -f; \
@@ -25,8 +25,7 @@ WORKDIR /requirements
 COPY ./webvirtbackend/requirements/production.txt /requirements/requirements.txt
 COPY ./optional-requirements.txt* /requirements/
 
-RUN pip install -U uv; \
-    uv pip install --system -r requirements.txt; \
+RUN uv pip install --system -r requirements.txt; \
     if [ -e optional-requirements.txt ]; then \
     uv pip install --system -r optional-requirements.txt; \
     fi
