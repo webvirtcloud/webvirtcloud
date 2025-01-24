@@ -22,21 +22,22 @@ RUN apk add --no-cache uv gcc g++ pango fontconfig openssh-client \
 
 WORKDIR /requirements
 
-COPY ./webvirtbackend/requirements/production.txt /requirements/requirements.txt
-COPY ./optional-requirements.txt* /requirements/
+COPY ./webvirtbackend/pyproject.toml ./webvirtbackend/uv.lock /requirements/
+COPY ./extra-requirements.txt* /requirements/
 
-RUN uv pip install --system -r requirements.txt; \
-    if [ -e optional-requirements.txt ]; then \
-    uv pip install --system -r optional-requirements.txt; \
+RUN export UV_PROJECT_ENVIRONMENT=$(python3 -c "import sys; print(sys.prefix)"); \
+    uv sync --no-dev; \
+    if [ -e extra-requirements.txt ]; then \
+        uv pip install --system -r extra-requirements.txt; \
     fi
 
 FROM --platform=$BUILDPLATFORM backend-deps AS backend
 
 WORKDIR /backend
 
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
 COPY ./webvirtbackend/ /backend/
 
 COPY --from=webvirtcloud:frontend /backend/templates/client/index.html /backend/templates/client/index.html
-
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1

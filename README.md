@@ -124,6 +124,17 @@ EMAIL_USE_TLS=True
 EMAIL_FROM="WebVirtCloud <noreply@gmail.com>"
 ```
 
+## Extra requirements (optional)
+
+To add extra requirements to the project, create a file named `extra-requirements.txt`. For example, to install the [sentry.io](https://sentry.io) package, add the following line to the file:
+
+```plaintext
+sentry-sdk
+```
+
+Copy `webvirtbackend/webvirtcloud/settings/local.py.example` to `webvirtbackend/webvirtcloud/settings/local.py` and edit DSN in the file.
+
+
 ## Installing the Compute Node (Hypervisor)
 
 See the [WebVirtCompute](https://github.com/webvirtcloud/webvirtcompute) repository for detailed instructions.

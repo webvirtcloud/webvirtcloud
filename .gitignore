@@ -5,7 +5,7 @@
 .vagrant
 Caddyfile
 env.local
-optional-requirements.txt
+extra-requirements.txt
 docker-compose.override.yml
 webvirtbackend/.mysql
 webvirtbackend/celerybeat-schedule
