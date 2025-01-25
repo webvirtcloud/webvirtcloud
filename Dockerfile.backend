@@ -14,18 +14,18 @@
 
 FROM --platform=$BUILDPLATFORM python:3.10-alpine AS backend-deps
 
-RUN apk add --no-cache uv gcc g++ pango fontconfig openssh-client \
-                       ttf-freefont font-noto terminus-font \
-                       musl-dev mariadb-dev libffi-dev openssl-dev; \
-    fc-cache -f; \
-    rm -rf /var/cache/apk/*
-
 WORKDIR /requirements
+
+ENV UV_PROJECT_ENVIRONMENT=/usr/local
 
 COPY ./webvirtbackend/pyproject.toml ./webvirtbackend/uv.lock /requirements/
 COPY ./extra-requirements.txt* /requirements/
 
-RUN export UV_PROJECT_ENVIRONMENT=$(python3 -c "import sys; print(sys.prefix)"); \
+RUN apk add --no-cache uv gcc g++ pango fontconfig openssh-client \
+                       ttf-freefont font-noto terminus-font \
+                       musl-dev mariadb-dev libffi-dev openssl-dev; \
+    fc-cache -f; \
+    rm -rf /var/cache/apk/*; \
     uv sync --no-dev; \
     if [ -e extra-requirements.txt ]; then \
         uv pip install --system -r extra-requirements.txt; \
