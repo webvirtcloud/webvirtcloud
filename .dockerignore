@@ -5,6 +5,13 @@
 .devcontainer
 Dockfile
 docker-compose.yml
+webvirtfront/.git
+webvirtfront/node_modules
 webvirtbacked/.git
+webvirtbacked/.venv
 webvirtbacked/.mysql
-webvirtbacked/.vscode
+webvirtbacked/.vscodev
+webvirtbacked/.devcontainer
+webvirtbacked/Dockfile
+webvirtbacked/docker-compose.yml
+webvirtbackend/celerybeat-schedule
