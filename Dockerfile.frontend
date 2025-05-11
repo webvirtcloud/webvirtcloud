@@ -30,7 +30,7 @@ COPY ./env.local /frontend/env.local
 
 RUN set -a; . /frontend/env.common; . /frontend/env.local; set +a; npm run build
 
-FROM --platform=$BUILDPLATFORM caddy:2.8.4-alpine AS frontend
+FROM --platform=$BUILDPLATFORM caddy:2.10.0-alpine AS frontend
 
 COPY ./webvirtbackend/static/ /usr/share/caddy/
 

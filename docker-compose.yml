@@ -12,9 +12,8 @@ services:
       - 443:443
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./.caddy/data:/data
-      - ./.caddy/config:/config
-      - ./.caddy/certs:/etc/caddy/certs
+      - caddy_data:/data
+      - caddy_config:/config
     env_file:
       - env.common
       - env.local
@@ -131,3 +130,7 @@ services:
       interval: 30s
       timeout: 30s
       retries: 3
+
+volumes:
+  caddy_data:
+  caddy_config:
